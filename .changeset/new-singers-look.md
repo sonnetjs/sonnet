@@ -1,0 +1,5 @@
+---
+"@sonnetjs/client": major
+---
+
+sonnetjs
