@@ -1,11 +1,22 @@
 {
   "name": "@sonnetjs/client",
   "version": "0.0.1",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/sonnet.umd.js",
+  "module": "./dist/sonnet.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "import": "./dist/sonnet.mjs",
+      "require": "./dist/sonnet.umd.js",
+      "types": "./dist/index.d.ts"
+    }
   },
   "license": "MIT",
   "scripts": {
+    "build": "vite build",
     "lint": "eslint \"**/*.ts\""
   },
   "devDependencies": {
@@ -13,5 +24,8 @@
     "@repo/typescript-config": "*",
     "eslint": "^8.57.0",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "vite-plugin-dts": "^3.8.1"
   }
 }
