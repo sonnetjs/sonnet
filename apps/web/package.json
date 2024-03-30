@@ -10,7 +10,8 @@
     "lint": "eslint \"src/**/*.ts\""
   },
   "dependencies": {
-    "@repo/ui": "*"
+    "@repo/ui": "*",
+    "@sonnetjs/client": "*"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
