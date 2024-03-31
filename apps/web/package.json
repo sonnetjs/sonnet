@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@repo/ui": "*",
-    "@sonnetjs/client": "*"
+    "@sonnetjs/core": "*"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",

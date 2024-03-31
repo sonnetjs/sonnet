@@ -2,4 +2,4 @@
 "@sonnetjs/core": major
 ---
 
-sonnetjs
+Sonnet JS core

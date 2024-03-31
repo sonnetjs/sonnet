@@ -1,6 +1,6 @@
 {
-  "name": "@sonnetjs/client",
-  "version": "0.0.2",
+  "name": "@sonnetjs/core",
+  "version": "0.0.1",
   "files": [
     "dist"
   ],
