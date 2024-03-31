@@ -1,6 +1,6 @@
 {
   "name": "@sonnetjs/core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "files": [
     "dist"
   ],
@@ -12,6 +12,7 @@
       "types": "./dist/index.d.mts"
     }
   },
+  "author": "htmujahid",
   "license": "MIT",
   "scripts": {
     "build": "tsup",
@@ -29,5 +30,26 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sonnetjs/sonnet.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sonnetjs/sonnet/issues"
+  },
+  "homepage": "https://github.com/sonnetjs/sonnet/tree/main/packages/sonnet-core#readme",
+  "tags": [
+    "sonnet",
+    "web-components",
+    "web"
+  ],
+  "keywords": [
+    "sonnetjs",
+    "sonnet",
+    "web-components",
+    "components",
+    "web",
+    "frontend"
+  ]
 }
