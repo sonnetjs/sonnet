@@ -66,13 +66,15 @@ const HeroSection = () => {
               'flex items-center gap-2 font-mono text-gray-700 rounded',
             )
             .children(
-              div().className('').innerText('~ npm i @sonnetjs/core').get(),
+              div().className('').innerText('~ npx create-sonnet-app').get(),
               div()
                 .className('w-4 h-4 cursor-pointer')
                 .innerHtml(CopyIcon())
                 .js((el) => {
                   el.onclick = () => {
-                    navigator.clipboard.writeText('npm i @sonnetjs/core');
+                    navigator.clipboard.writeText(
+                      'npx create-sonnet-app@latest',
+                    );
                     el.innerHTML = TickIcon();
                     setTimeout(() => {
                       el.innerHTML = CopyIcon();

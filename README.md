@@ -2,20 +2,18 @@
 
 A frontend framework for building modern web applications. SonnetJS is a collection of packages and tools that help you build web applications with ease.
 
-## Examples
+## Usage
 
-You can see an example of a SonnetJS application in the `examples` directory. To run the example, follow these steps:
-
-1. Clone the repository
+1. Run the following command to create a new SonnetJS project.
 
 ```bash
-git clone https://github.com/sonnetjs/sonnet
+npx create-sonnet-app@latest
 ```
 
-2. Change into the `examples/basic` directory
+2. Change directory to the newly created project.
 
 ```bash
-cd sonnet/examples/basic
+cd [my-sonnet-app]
 ```
 
 3. Install the dependencies
