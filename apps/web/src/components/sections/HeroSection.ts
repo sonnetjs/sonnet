@@ -1,10 +1,9 @@
 import { a, div, section } from '@sonnetjs/core';
-import { TickIcon, CopyIcon } from '../assets';
-import { ExampleSection } from '.';
+import { TickIcon, CopyIcon, SquarePatterns } from '../assets';
 
 const HeroSection = () => {
   return section()
-    .className('relative ')
+    .className('relative overflow-hidden')
     .children(
       div()
         .className(
@@ -31,7 +30,7 @@ const HeroSection = () => {
             .get(),
           div()
             .className(
-              'text-neutral-600 text-sm py-8 sm:text-base md:text-lg lg:text-xl text-center',
+              'text-neutral-600 text-sm sm:py-4 md:py-8 sm:text-base md:text-lg lg:text-xl text-center',
             )
             .innerText(
               'A framework for building web applications with a focus on simplicity and performance with native feel.',
@@ -85,7 +84,7 @@ const HeroSection = () => {
             .get(),
         )
         .get(),
-      ExampleSection(),
+      div().innerHtml(SquarePatterns()).get(),
     )
     .get();
 };
