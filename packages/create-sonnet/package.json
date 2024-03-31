@@ -1,0 +1,16 @@
+{
+  "name": "create-sonnet-app",
+  "version": "0.0.3",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "create-sonnet-app": "./index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  }
+}
