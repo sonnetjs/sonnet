@@ -28,7 +28,7 @@ const Counter = () => {
             .type('button')
             .innerText(`count is ${counter}`)
             .className('btn')
-            .callback((el) => {
+            .js((el) => {
               el.addEventListener("click", () => {
                 counter += 1;
                 buttonRef.current.innerText = `count is ${counter}`
