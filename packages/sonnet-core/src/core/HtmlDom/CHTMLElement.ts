@@ -152,7 +152,7 @@ export default class CHTMLElement<T> extends CElement {
     return this;
   }
 
-  public callback(callback: (el: HTMLElement) => void) {
+  public js(callback: (el: HTMLElement) => void) {
     if (this.el) {
       callback(this.el);
     }

@@ -153,14 +153,14 @@ const element = div()
 
 ### Events
 
-You can add event listeners to an HTML element using callable method.
+You can add event listeners to an HTML element using js method.
 
 ```typescript
 import { button } from '@sonnetjs/core';
 
 const element = button()
   .innerText('Click me')
-  .callable((el) => {
+  .js((el) => {
     el.addEventListener('click', () => {
       console.log('Button clicked');
     });
@@ -184,7 +184,7 @@ const Component = () => {
     .children(
       button()
         .innerText('Click me')
-        .callable((el) => {
+        .js((el) => {
           el.addEventListener('click', () => {
             counter++;
             divRef.current.innerText = `Counter: ${counter}`;
