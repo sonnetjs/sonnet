@@ -2,8 +2,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-const __dirname = dirname(import.meta.url).replace('file://', '');
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 import * as readline from 'readline';
 
