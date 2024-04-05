@@ -72,20 +72,6 @@ export default class CSVGElement<T> extends CElement {
     return this;
   }
 
-  public ref(value: { current: SVGElement | null }) {
-    if (this.el) {
-      value.current = this.el;
-    }
-    return this;
-  }
-
-  public js(callback: (el: SVGElement) => void) {
-    if (this.el) {
-      callback(this.el);
-    }
-    return this;
-  }
-
   public get() {
     return this.el as T;
   }

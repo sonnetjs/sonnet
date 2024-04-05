@@ -1,4 +1,4 @@
-export { render } from './utils';
+export { render, $component } from './utils';
 export {
   math,
   menclose,

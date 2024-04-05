@@ -3,5 +3,7 @@ import { render } from '@sonnetjs/core';
 import App from './App';
 
 (async () => {
-  render('app', await App());
+  const AppComponent = new App();
+  render('app', await AppComponent.get());
+  AppComponent.script();
 })();

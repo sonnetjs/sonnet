@@ -81,20 +81,6 @@ export default class CMathMLElement extends CElement {
     return this;
   }
 
-  public ref(value: { current: MathMLElement | null }) {
-    if (this.el) {
-      value.current = this.el;
-    }
-    return this;
-  }
-
-  public js(callback: (el: MathMLElement) => void) {
-    if (this.el) {
-      callback(this.el);
-    }
-    return this;
-  }
-
   public get() {
     return this.el as MathMLElement;
   }

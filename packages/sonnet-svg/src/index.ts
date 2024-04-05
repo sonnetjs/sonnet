@@ -1,4 +1,4 @@
-export { render } from './utils';
+export { render, $component } from './utils';
 export { a } from './core/CSVGAElement';
 export { animate } from './core/CSVGAnimateElement';
 export { animateMotion } from './core/CSVGAnimateMotionElement';

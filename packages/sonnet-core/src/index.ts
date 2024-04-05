@@ -103,5 +103,4 @@ export { title } from './core/HtmlDom/CHTMLTitleElement';
 export { track } from './core/HtmlDom/CHTMLTrackElement';
 export { ul } from './core/HtmlDom/CHTMLUListElement';
 export { video } from './core/HtmlDom/CHTMLVideoElement';
-export { useRef } from './hooks/useRef';
-export { render } from './utils';
+export { render, $component } from './utils';

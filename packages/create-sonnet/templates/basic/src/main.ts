@@ -3,5 +3,7 @@ import { render } from '@sonnetjs/core';
 import { Counter } from './Counter';
 
 (async () => {
-  render('app', await Counter());
+  const CounterComponent = new Counter();
+  render('app', await CounterComponent.get());
+  CounterComponent.script();
 })();
