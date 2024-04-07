@@ -1,6 +1,6 @@
-import { a, button, div, h1, img, p } from '@sonnetjs/core';
+import { SonnetElement, a, button, div, h1, img, p } from '@sonnetjs/core';
 
-class Counter {
+class Counter extends SonnetElement {
   counter = 0;
 
   public script() {
@@ -48,4 +48,4 @@ class Counter {
   }
 }
 
-export { Counter };
+export default Counter;

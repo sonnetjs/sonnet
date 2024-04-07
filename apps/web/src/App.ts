@@ -1,13 +1,11 @@
-import { div, main } from '@sonnetjs/core';
+import { Component, SonnetElement, div, main } from '@sonnetjs/core';
 import { HeroSection } from './components/sections';
 import { Header, Footer } from './components/shared';
 
 const HeroSectionComponent = new HeroSection();
 
-class App {
-  public script() {
-    HeroSectionComponent.script();
-  }
+class App extends SonnetElement {
+  components: Component[] = [HeroSectionComponent];
 
   public get() {
     return div()

@@ -104,3 +104,5 @@ export { track } from './core/HtmlDom/CHTMLTrackElement';
 export { ul } from './core/HtmlDom/CHTMLUListElement';
 export { video } from './core/HtmlDom/CHTMLVideoElement';
 export { render, $component } from './utils';
+export { SonnetElement } from './abstract/SonnetElement';
+export { type Component } from './interfaces/Component';

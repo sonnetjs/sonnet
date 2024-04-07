@@ -7,6 +7,13 @@ export default class CElement extends CNode {
     super();
   }
 
+  public setAttribute(name: string, value: string) {
+    if (this.el) {
+      this.el.setAttribute(name, value);
+    }
+    return this;
+  }
+
   public className(value: string) {
     if (this.el) {
       this.el.className = value;

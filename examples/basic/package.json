@@ -13,6 +13,6 @@
     "vite": "^5.2.6"
   },
   "dependencies": {
-    "@sonnetjs/core": "^0.0.7"
+    "@sonnetjs/core": "^0.0.8"
   }
 }
