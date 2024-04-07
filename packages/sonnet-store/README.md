@@ -1,12 +1,12 @@
-# sonnetjs/svg
+# sonnetjs/store
 
-sonnetjs/svg is a library for creating SVG elements using a simple and declarative API.
+sonnetjs/store is a simple and declarative state management library for JavaScript applications.
 
 ## Features
 
-- Create SVG elements using a simple and declarative API.
-- Set attributes and properties of SVG elements using chainable methods.
-- Add children to SVG elements using children method.
+- Simple and declarative API for managing state.
+- Supports multiple stores.
+- support watch for state changes.
 
 ## Usage
 
@@ -28,10 +28,10 @@ cd [my-sonnet-app]
 npm i
 ```
 
-4. Install sonnetjs/svg
+4. Install sonnetjs/store
 
 ```bash
-npm i @sonnetjs/svg
+npm i @sonnetjs/store
 ```
 
 5. Start the development server
@@ -40,19 +40,6 @@ npm i @sonnetjs/svg
 npm run dev
 ```
 
-## Documentation
-
-This is a simple example of how to use sonnetjs/svg to create an SVG element.
-
-```typescript
-import { svg, rect } from '@sonnetjs/svg';
-
-const element = svg()
-  .width(100)
-  .height(100)
-  .children(rect().x(10).y(10).width(80).height(80).fill('red'));
-```
-
 ## License
 
-sonnetjs/core is licensed under the MIT license.
+sonnetjs/store is licensed under the MIT license.

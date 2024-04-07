@@ -55,4 +55,4 @@ const element = svg()
 
 ## License
 
-sonnetjs/core is licensed under the MIT license.
+sonnetjs/svg is licensed under the MIT license.
