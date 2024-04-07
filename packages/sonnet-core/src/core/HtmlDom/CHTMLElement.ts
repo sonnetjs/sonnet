@@ -11,6 +11,13 @@ export default class CHTMLElement<T> extends CElement {
     }
   }
 
+  public dataset(name: string, value: string) {
+    if (this.el) {
+      this.el.dataset[name] = value;
+    }
+    return this;
+  }
+
   public accessKey(value: string) {
     if (this.el) {
       this.el.accessKey = value;
