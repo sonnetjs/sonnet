@@ -103,6 +103,7 @@ export { title } from './core/HtmlDom/CHTMLTitleElement';
 export { track } from './core/HtmlDom/CHTMLTrackElement';
 export { ul } from './core/HtmlDom/CHTMLUListElement';
 export { video } from './core/HtmlDom/CHTMLVideoElement';
-export { render, $component } from './utils';
+export { render, $component, isServer } from './utils';
 export { SonnetElement } from './abstract/SonnetElement';
 export { type Component } from './interfaces/Component';
+export { serverParse } from './utils/parser';

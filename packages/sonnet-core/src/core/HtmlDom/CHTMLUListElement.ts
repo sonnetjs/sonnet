@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLUListElement extends CHTMLElement<HTMLUListElement> {
@@ -5,8 +6,13 @@ class CHTMLUListElement extends CHTMLElement<HTMLUListElement> {
 
   constructor() {
     super();
-    const html = document.createElement('ul');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'ul',
+      } as HTMLUListElement;
+    } else {
+      this.el = document.createElement('ul');
+    }
   }
 }
 

@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLScriptElement extends CHTMLElement<HTMLScriptElement> {
@@ -5,8 +6,13 @@ class CHTMLScriptElement extends CHTMLElement<HTMLScriptElement> {
 
   constructor() {
     super();
-    const html = document.createElement('script');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'script',
+      } as HTMLScriptElement;
+    } else {
+      this.el = document.createElement('script');
+    }
   }
 
   public async(value: boolean) {

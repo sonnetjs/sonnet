@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGTextPositioningElement from './CSVGTextPositioningElement';
 
 export default class CSVGTSpanElement extends CSVGTextPositioningElement<SVGTSpanElement> {
@@ -5,7 +6,13 @@ export default class CSVGTSpanElement extends CSVGTextPositioningElement<SVGTSpa
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+    if (isServer()) {
+      this.el = {
+        tagName: 'tspan',
+      } as SVGTSpanElement;
+    } else {
+      this.el = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+    }
   }
 
   public x(value: string) {
@@ -14,7 +21,7 @@ export default class CSVGTSpanElement extends CSVGTextPositioningElement<SVGTSpa
   }
 
   public y(value: string) {
-    this.el?.setAttribute('y', value)
+    this.el?.setAttribute('y', value);
     return this;
   }
 
@@ -38,12 +45,12 @@ export default class CSVGTSpanElement extends CSVGTextPositioningElement<SVGTSpa
     return this;
   }
 
-  public textLength(value: string){  
+  public textLength(value: string) {
     this.el?.setAttribute('textLength', value);
     return this;
   }
 
-  public baselineShift(value: string){  
+  public baselineShift(value: string) {
     this.el?.setAttribute('baselineShift', value);
     return this;
   }

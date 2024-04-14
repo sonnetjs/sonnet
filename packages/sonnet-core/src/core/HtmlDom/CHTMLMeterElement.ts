@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLMeterElement extends CHTMLElement<HTMLMeterElement> {
@@ -5,8 +6,13 @@ class CHTMLMeterElement extends CHTMLElement<HTMLMeterElement> {
 
   constructor() {
     super();
-    const html = document.createElement('meter');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'meter',
+      } as HTMLMeterElement;
+    } else {
+      this.el = document.createElement('meter');
+    }
   }
 
   public high(value: number) {

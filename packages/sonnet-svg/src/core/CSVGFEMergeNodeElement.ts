@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFEMergeNodeElement extends CSVGElement<SVGFEMergeNodeElement> {
@@ -5,7 +6,16 @@ export default class CSVGFEMergeNodeElement extends CSVGElement<SVGFEMergeNodeEl
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+    if (isServer()) {
+      this.el = {
+        tagName: 'feMergeNode',
+      } as SVGFEMergeNodeElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feMergeNode',
+      );
+    }
   }
 
   public in(value: string) {

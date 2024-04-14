@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGClipPathElement extends CSVGElement<SVGClipPathElement> {
@@ -5,10 +6,16 @@ export default class CSVGClipPathElement extends CSVGElement<SVGClipPathElement>
 
   constructor() {
     super();
-    this.el = document.createElementNS(
-      'http://www.w3.org/2000/svg',
-      'clipPath',
-    );
+    if (isServer()) {
+      this.el = {
+        tagName: 'clipPath',
+      } as SVGClipPathElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'clipPath',
+      );
+    }
   }
 
   public clipPathUnits(value: string) {

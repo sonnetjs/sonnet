@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGGeometryElement from './CSVGGeometryElement';
 
 export default class CSVGPathElement extends CSVGGeometryElement<SVGPathElement> {
@@ -5,7 +6,13 @@ export default class CSVGPathElement extends CSVGGeometryElement<SVGPathElement>
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    if (isServer()) {
+      this.el = {
+        tagName: 'path',
+      } as SVGPathElement;
+    } else {
+      this.el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    }
   }
 
   public d(value: string) {
@@ -50,7 +57,7 @@ export default class CSVGPathElement extends CSVGGeometryElement<SVGPathElement>
     this.el?.setAttribute('systemLanguage', value);
     return this;
   }
-  
+
   public visibility(value: string) {
     this.el?.setAttribute('visibility', value);
     return this;

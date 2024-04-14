@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFEDiffuseLightingElement extends CSVGElement<SVGFEDiffuseLightingElement> {
@@ -5,7 +6,16 @@ export default class CSVGFEDiffuseLightingElement extends CSVGElement<SVGFEDiffu
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'feDiffuseLighting');
+    if (isServer()) {
+      this.el = {
+        tagName: 'feDiffuseLighting',
+      } as SVGFEDiffuseLightingElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feDiffuseLighting',
+      );
+    }
   }
 
   public in(value: string) {

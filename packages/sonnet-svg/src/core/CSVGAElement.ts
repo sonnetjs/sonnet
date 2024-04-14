@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGGraphicsElement from './CSVGGraphicsElement';
 
 export default class CSVGAElement extends CSVGGraphicsElement<SVGAElement> {
@@ -5,17 +6,27 @@ export default class CSVGAElement extends CSVGGraphicsElement<SVGAElement> {
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'a');
+    if (isServer()) {
+      this.el = {
+        tagName: 'a',
+      } as SVGAElement;
+    } else {
+      this.el = document.createElementNS('http://www.w3.org/2000/svg', 'a');
+    }
   }
 
   public download(value: string) {
-    this.el?.setAttribute("download", value);
+    this.el?.setAttribute('download', value);
     return this;
   }
 
   public href(value: string) {
     this.el?.setAttribute('href', value);
-    this.el?.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', value);
+    this.el?.setAttributeNS(
+      'http://www.w3.org/1999/xlink',
+      'xlink:href',
+      value,
+    );
     return this;
   }
 
@@ -46,22 +57,38 @@ export default class CSVGAElement extends CSVGGraphicsElement<SVGAElement> {
 
   public type(value: string) {
     this.el?.setAttribute('type', value);
-    this.el?.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:type', value);
+    this.el?.setAttributeNS(
+      'http://www.w3.org/1999/xlink',
+      'xlink:type',
+      value,
+    );
     return this;
   }
 
   public actuate(value: string) {
-    this.el?.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:actuate', value);
+    this.el?.setAttributeNS(
+      'http://www.w3.org/1999/xlink',
+      'xlink:actuate',
+      value,
+    );
     return this;
   }
 
   public show(value: string) {
-    this.el?.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:show', value);
+    this.el?.setAttributeNS(
+      'http://www.w3.org/1999/xlink',
+      'xlink:show',
+      value,
+    );
     return this;
   }
 
   public title(value: string) {
-    this.el?.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:title', value);
+    this.el?.setAttributeNS(
+      'http://www.w3.org/1999/xlink',
+      'xlink:title',
+      value,
+    );
     return this;
   }
 
@@ -84,7 +111,7 @@ export default class CSVGAElement extends CSVGGraphicsElement<SVGAElement> {
     this.el?.setAttribute('systemLanguage', value);
     return this;
   }
-  
+
   public visibility(value: string) {
     this.el?.setAttribute('visibility', value);
     return this;

@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGGeometryElement from './CSVGGeometryElement';
 
 export default class CSVGLineElement extends CSVGGeometryElement<SVGLineElement> {
@@ -5,7 +6,13 @@ export default class CSVGLineElement extends CSVGGeometryElement<SVGLineElement>
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    if (isServer()) {
+      this.el = {
+        tagName: 'line',
+      } as SVGLineElement;
+    } else {
+      this.el = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    }
   }
 
   public x1(value: string) {
@@ -64,7 +71,7 @@ export default class CSVGLineElement extends CSVGGeometryElement<SVGLineElement>
     this.el?.setAttribute('systemLanguage', value);
     return this;
   }
-  
+
   public visibility(value: string) {
     this.el?.setAttribute('visibility', value);
     return this;

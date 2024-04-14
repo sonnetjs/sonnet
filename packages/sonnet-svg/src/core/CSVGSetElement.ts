@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGAnimationElement from './CSVGAnimationElement';
 
 export default class CSVGSetElement extends CSVGAnimationElement<SVGSetElement> {
@@ -5,7 +6,13 @@ export default class CSVGSetElement extends CSVGAnimationElement<SVGSetElement> 
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'set');
+    if (isServer()) {
+      this.el = {
+        tagName: 'set',
+      } as SVGSetElement;
+    } else {
+      this.el = document.createElementNS('http://www.w3.org/2000/svg', 'set');
+    }
   }
 
   public to(value: string) {

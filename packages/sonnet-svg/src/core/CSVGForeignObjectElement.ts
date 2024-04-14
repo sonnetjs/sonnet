@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGGraphicsElement from './CSVGGraphicsElement';
 
 export default class CSVGForeignObjectElement extends CSVGGraphicsElement<SVGForeignObjectElement> {
@@ -5,7 +6,16 @@ export default class CSVGForeignObjectElement extends CSVGGraphicsElement<SVGFor
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
+    if (isServer()) {
+      this.el = {
+        tagName: 'foreignObject',
+      } as SVGForeignObjectElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'foreignObject',
+      );
+    }
   }
 
   public x(value: string) {
@@ -61,7 +71,7 @@ export default class CSVGForeignObjectElement extends CSVGGraphicsElement<SVGFor
     }
     return this;
   }
-  
+
   public visibility(value: string) {
     this.el?.setAttribute('visibility', value);
     return this;

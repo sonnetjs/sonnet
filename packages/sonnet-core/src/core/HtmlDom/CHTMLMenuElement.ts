@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLMenuElement extends CHTMLElement<HTMLMenuElement> {
@@ -5,8 +6,13 @@ class CHTMLMenuElement extends CHTMLElement<HTMLMenuElement> {
 
   constructor() {
     super();
-    const html = document.createElement('menu');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'menu',
+      } as HTMLMenuElement;
+    } else {
+      this.el = document.createElement('menu');
+    }
   }
 }
 

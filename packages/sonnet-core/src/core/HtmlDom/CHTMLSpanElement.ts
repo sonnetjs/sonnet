@@ -1,12 +1,18 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLSpanElement extends CHTMLElement<HTMLSpanElement> {
   public el: HTMLSpanElement;
 
-  constructor(el: string = 'span') {
+  constructor(tag: string = 'span') {
     super();
-    const html = document.createElement(el);
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: tag,
+      } as HTMLSpanElement;
+    } else {
+      this.el = document.createElement(tag);
+    }
   }
 }
 
@@ -37,7 +43,6 @@ export function code() {
 export function em() {
   return new CHTMLSpanElement('em');
 }
-
 
 export function i() {
   return new CHTMLSpanElement('i');

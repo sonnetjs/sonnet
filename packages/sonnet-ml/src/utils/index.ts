@@ -11,3 +11,11 @@ export function $component<T extends new (...args: any[]) => any>(cls: T) {
   return (...args: ConstructorParameters<T>): InstanceType<T> =>
     new cls(...args);
 }
+
+export function isServer() {
+  return (
+    process.env.NODE_ENV === 'production' ||
+    typeof window === 'undefined' ||
+    typeof document === 'undefined'
+  );
+}

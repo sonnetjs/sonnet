@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGStopElement extends CSVGElement<SVGStopElement> {
@@ -5,7 +6,13 @@ export default class CSVGStopElement extends CSVGElement<SVGStopElement> {
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    if (isServer()) {
+      this.el = {
+        tagName: 'stop',
+      } as SVGStopElement;
+    } else {
+      this.el = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    }
   }
 
   public offset(value: string) {

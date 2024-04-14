@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFETileElement extends CSVGElement<SVGFETileElement> {
@@ -5,7 +6,16 @@ export default class CSVGFETileElement extends CSVGElement<SVGFETileElement> {
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'feTile');
+    if (isServer()) {
+      this.el = {
+        tagName: 'feTile',
+      } as SVGFETileElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feTile',
+      );
+    }
   }
 
   public in(value: string) {
@@ -27,15 +37,15 @@ export default class CSVGFETileElement extends CSVGElement<SVGFETileElement> {
       this.el.setAttribute('height', value);
     }
     return this;
-  } 
+  }
 
   public result(value: string) {
     if (this.el) {
       this.el.setAttribute('result', value);
     }
     return this;
-  } 
-  
+  }
+
   public width(value: string) {
     this.el?.setAttribute('width', value);
     return this;

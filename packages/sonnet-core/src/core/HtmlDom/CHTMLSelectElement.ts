@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLSelectElement extends CHTMLElement<HTMLSelectElement> {
@@ -5,8 +6,13 @@ class CHTMLSelectElement extends CHTMLElement<HTMLSelectElement> {
 
   constructor() {
     super();
-    const html = document.createElement('select');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'select',
+      } as HTMLSelectElement;
+    } else {
+      this.el = document.createElement('select');
+    }
   }
 
   public disabled(value: boolean) {

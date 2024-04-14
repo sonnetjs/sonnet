@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLOptGroupElement extends CHTMLElement<HTMLOptGroupElement> {
@@ -5,8 +6,13 @@ class CHTMLOptGroupElement extends CHTMLElement<HTMLOptGroupElement> {
 
   constructor() {
     super();
-    const html = document.createElement('optgroup');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'optgroup',
+      } as HTMLOptGroupElement;
+    } else {
+      this.el = document.createElement('optgroup');
+    }
   }
 
   public disabled(value: boolean) {

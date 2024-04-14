@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGAnimationElement from './CSVGAnimationElement';
 
 export default class CSVGAnimateElementTransform extends CSVGAnimationElement<SVGAnimateTransformElement> {
@@ -5,10 +6,16 @@ export default class CSVGAnimateElementTransform extends CSVGAnimationElement<SV
 
   constructor() {
     super();
-    this.el = document.createElementNS(
-      'http://www.w3.org/2000/svg',
-      'animateTransform',
-    );
+    if (isServer()) {
+      this.el = {
+        tagName: 'animateTransform',
+      } as SVGAnimateTransformElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'animateTransform',
+      );
+    }
   }
 
   public attributeName(value: string) {

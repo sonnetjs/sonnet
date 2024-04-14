@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLOptionElement extends CHTMLElement<HTMLOptionElement> {
@@ -5,8 +6,13 @@ class CHTMLOptionElement extends CHTMLElement<HTMLOptionElement> {
 
   constructor() {
     super();
-    const html = document.createElement('option');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'option',
+      } as HTMLOptionElement;
+    } else {
+      this.el = document.createElement('option');
+    }
   }
 
   public disabled(value: boolean) {

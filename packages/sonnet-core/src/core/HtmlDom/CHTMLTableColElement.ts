@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLTableColElement extends CHTMLElement<HTMLTableColElement> {
@@ -5,8 +6,13 @@ class CHTMLTableColElement extends CHTMLElement<HTMLTableColElement> {
 
   constructor(tag: 'col' | 'colgroup') {
     super();
-    const html = document.createElement(tag);
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: tag,
+      } as HTMLTableColElement;
+    } else {
+      this.el = document.createElement(tag);
+    }
   }
 
   public span(value: number) {

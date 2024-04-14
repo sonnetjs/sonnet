@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLParagraphElement extends CHTMLElement<HTMLParagraphElement> {
@@ -5,8 +6,13 @@ class CHTMLParagraphElement extends CHTMLElement<HTMLParagraphElement> {
 
   constructor() {
     super();
-    const html = document.createElement('p');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'p',
+      } as HTMLParagraphElement;
+    } else {
+      this.el = document.createElement('p');
+    }
   }
 }
 

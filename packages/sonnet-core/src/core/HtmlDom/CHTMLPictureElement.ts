@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLPictureElement extends CHTMLElement<HTMLPictureElement> {
@@ -5,8 +6,13 @@ class CHTMLPictureElement extends CHTMLElement<HTMLPictureElement> {
 
   constructor() {
     super();
-    const html = document.createElement('picture');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'picture',
+      } as HTMLPictureElement;
+    } else {
+      this.el = document.createElement('picture');
+    }
   }
 }
 

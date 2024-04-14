@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGGeometryElement from './CSVGGeometryElement';
 
 export default class CSVGRectElement extends CSVGGeometryElement<SVGRectElement> {
@@ -5,7 +6,13 @@ export default class CSVGRectElement extends CSVGGeometryElement<SVGRectElement>
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    if (isServer()) {
+      this.el = {
+        tagName: 'rect',
+      } as SVGRectElement;
+    } else {
+      this.el = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    }
   }
 
   public x(value: string) {

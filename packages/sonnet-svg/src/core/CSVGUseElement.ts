@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGGraphicsElement from './CSVGGraphicsElement';
 
 export default class CSVGUseElement extends CSVGGraphicsElement<SVGUseElement> {
@@ -5,7 +6,13 @@ export default class CSVGUseElement extends CSVGGraphicsElement<SVGUseElement> {
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    if (isServer()) {
+      this.el = {
+        tagName: 'use',
+      } as SVGUseElement;
+    } else {
+      this.el = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    }
   }
 
   public href(value: string) {

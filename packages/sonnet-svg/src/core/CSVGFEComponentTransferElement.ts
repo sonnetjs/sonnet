@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFEComponentTransferElement extends CSVGElement<SVGFEComponentTransferElement> {
@@ -5,10 +6,16 @@ export default class CSVGFEComponentTransferElement extends CSVGElement<SVGFECom
 
   constructor() {
     super();
-    this.el = document.createElementNS(
-      'http://www.w3.org/2000/svg',
-      'feComponentTransfer',
-    );
+    if (isServer()) {
+      this.el = {
+        tagName: 'feComponentTransfer',
+      } as SVGFEComponentTransferElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feComponentTransfer',
+      );
+    }
   }
 
   public in(value: string) {

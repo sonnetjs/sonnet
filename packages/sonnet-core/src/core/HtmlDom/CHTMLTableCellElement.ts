@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLTableCellElement extends CHTMLElement<HTMLTableCellElement> {
@@ -5,8 +6,13 @@ class CHTMLTableCellElement extends CHTMLElement<HTMLTableCellElement> {
 
   constructor(tag: 'th' | 'td') {
     super();
-    const html = document.createElement(tag);
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: tag,
+      } as HTMLTableCellElement;
+    } else {
+      this.el = document.createElement(tag);
+    }
   }
 
   public abbr(value: string) {

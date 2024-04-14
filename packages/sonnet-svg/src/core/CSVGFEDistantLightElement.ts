@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFEDistantLightElement extends CSVGElement<SVGFEDistantLightElement> {
@@ -5,7 +6,16 @@ export default class CSVGFEDistantLightElement extends CSVGElement<SVGFEDistantL
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'feDistantLight');
+    if (isServer()) {
+      this.el = {
+        tagName: 'feDistantLight',
+      } as SVGFEDistantLightElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feDistantLight',
+      );
+    }
   }
 
   public azimuth(value: string) {
@@ -27,7 +37,7 @@ export default class CSVGFEDistantLightElement extends CSVGElement<SVGFEDistantL
       this.el.setAttribute('result', value);
     }
     return this;
-  } 
+  }
 }
 
 export function feDistantLight() {

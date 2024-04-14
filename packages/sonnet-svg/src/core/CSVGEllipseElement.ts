@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGGeometryElement from './CSVGGeometryElement';
 
 export default class CSVGEllipseElement extends CSVGGeometryElement<SVGEllipseElement> {
@@ -5,7 +6,16 @@ export default class CSVGEllipseElement extends CSVGGeometryElement<SVGEllipseEl
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+    if (isServer()) {
+      this.el = {
+        tagName: 'ellipse',
+      } as SVGEllipseElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'ellipse',
+      );
+    }
   }
 
   public cx(value: string) {

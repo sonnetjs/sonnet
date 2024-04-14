@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLIFrameElement extends CHTMLElement<HTMLIFrameElement> {
@@ -5,8 +6,13 @@ class CHTMLIFrameElement extends CHTMLElement<HTMLIFrameElement> {
 
   constructor() {
     super();
-    const html = document.createElement('iframe');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'iframe',
+      } as HTMLIFrameElement;
+    } else {
+      this.el = document.createElement('iframe');
+    }
   }
 
   public allow(value: string) {

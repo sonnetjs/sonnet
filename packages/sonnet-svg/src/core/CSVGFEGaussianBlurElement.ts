@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFEGaussianBlurElement extends CSVGElement<SVGFEGaussianBlurElement> {
@@ -5,7 +6,16 @@ export default class CSVGFEGaussianBlurElement extends CSVGElement<SVGFEGaussian
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'feGaussianBlur');
+    if (isServer()) {
+      this.el = {
+        tagName: 'feGaussianBlur',
+      } as SVGFEGaussianBlurElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feGaussianBlur',
+      );
+    }
   }
 
   public in(value: string) {
@@ -48,8 +58,8 @@ export default class CSVGFEGaussianBlurElement extends CSVGElement<SVGFEGaussian
       this.el.setAttribute('result', value);
     }
     return this;
-  } 
-  
+  }
+
   public width(value: string) {
     this.el?.setAttribute('width', value);
     return this;

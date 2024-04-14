@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLSlotElement extends CHTMLElement<HTMLSlotElement> {
@@ -5,8 +6,13 @@ class CHTMLSlotElement extends CHTMLElement<HTMLSlotElement> {
 
   constructor() {
     super();
-    const html = document.createElement('slot');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'slot',
+      } as HTMLSlotElement;
+    } else {
+      this.el = document.createElement('slot');
+    }
   }
 
   public name(value: string) {

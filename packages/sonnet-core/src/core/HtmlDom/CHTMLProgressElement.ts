@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLProgressElement extends CHTMLElement<HTMLProgressElement> {
@@ -5,8 +6,13 @@ class CHTMLProgressElement extends CHTMLElement<HTMLProgressElement> {
 
   constructor() {
     super();
-    const html = document.createElement('progress');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'progress',
+      } as HTMLProgressElement;
+    } else {
+      this.el = document.createElement('progress');
+    }
   }
 
   public max(value: number) {

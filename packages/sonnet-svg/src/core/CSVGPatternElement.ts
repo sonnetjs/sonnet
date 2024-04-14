@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGPatternElement extends CSVGElement<SVGPatternElement> {
@@ -5,7 +6,16 @@ export default class CSVGPatternElement extends CSVGElement<SVGPatternElement> {
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'pattern');
+    if (isServer()) {
+      this.el = {
+        tagName: 'pattern',
+      } as SVGPatternElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'pattern',
+      );
+    }
   }
 
   public x(value: string) {

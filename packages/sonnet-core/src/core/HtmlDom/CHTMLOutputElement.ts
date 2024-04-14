@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLOutputElement extends CHTMLElement<HTMLOutputElement> {
@@ -5,8 +6,13 @@ class CHTMLOutputElement extends CHTMLElement<HTMLOutputElement> {
 
   constructor() {
     super();
-    const html = document.createElement('output');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'output',
+      } as HTMLOutputElement;
+    } else {
+      this.el = document.createElement('output');
+    }
   }
 
   public defaultValue(value: string) {

@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFEMergeElement extends CSVGElement<SVGFEMergeElement> {
@@ -5,7 +6,16 @@ export default class CSVGFEMergeElement extends CSVGElement<SVGFEMergeElement> {
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'feMerge');
+    if (isServer()) {
+      this.el = {
+        tagName: 'feMerge',
+      } as SVGFEMergeElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feMerge',
+      );
+    }
   }
 
   public colorInterpolationFilters(value: string) {
@@ -20,15 +30,15 @@ export default class CSVGFEMergeElement extends CSVGElement<SVGFEMergeElement> {
       this.el.setAttribute('height', value);
     }
     return this;
-  } 
-  
+  }
+
   public result(value: string) {
     if (this.el) {
       this.el.setAttribute('result', value);
     }
     return this;
   }
-  
+
   public width(value: string) {
     this.el?.setAttribute('width', value);
     return this;

@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLDataListElement extends CHTMLElement<HTMLDataListElement> {
@@ -5,8 +6,13 @@ class CHTMLDataListElement extends CHTMLElement<HTMLDataListElement> {
 
   constructor() {
     super();
-    const html = document.createElement('datalist');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'datalist',
+      } as HTMLDataListElement;
+    } else {
+      this.el = document.createElement('datalist');
+    }
   }
 }
 

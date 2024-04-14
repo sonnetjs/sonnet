@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLBaseElement extends CHTMLElement<HTMLBaseElement> {
@@ -5,8 +6,13 @@ class CHTMLBaseElement extends CHTMLElement<HTMLBaseElement> {
 
   constructor() {
     super();
-    const html = document.createElement('base');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'base',
+      } as HTMLBaseElement;
+    } else {
+      this.el = document.createElement('base');
+    }
   }
 
   public href(value: string) {

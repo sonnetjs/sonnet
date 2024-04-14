@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGGraphicsElement from './CSVGGraphicsElement';
 
 export default class CSVGGElement extends CSVGGraphicsElement<SVGGElement> {
@@ -5,7 +6,13 @@ export default class CSVGGElement extends CSVGGraphicsElement<SVGGElement> {
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    if (isServer()) {
+      this.el = {
+        tagName: 'g',
+      } as SVGGElement;
+    } else {
+      this.el = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    }
   }
 
   public fill(color: string) {

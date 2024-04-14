@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGMarkerElement extends CSVGElement<SVGMarkerElement> {
@@ -5,7 +6,16 @@ export default class CSVGMarkerElement extends CSVGElement<SVGMarkerElement> {
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+    if (isServer()) {
+      this.el = {
+        tagName: 'marker',
+      } as SVGMarkerElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'marker',
+      );
+    }
   }
 
   public markerHeight(value: string) {

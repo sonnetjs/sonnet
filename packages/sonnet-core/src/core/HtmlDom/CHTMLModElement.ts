@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLModElement extends CHTMLElement<HTMLModElement> {
@@ -5,8 +6,13 @@ class CHTMLModElement extends CHTMLElement<HTMLModElement> {
 
   constructor(tag: 'del' | 'ins') {
     super();
-    const html = document.createElement(tag);
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: tag,
+      } as HTMLModElement;
+    } else {
+      this.el = document.createElement(tag);
+    }
   }
 
   public cite(value: string) {

@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGTextPositioningElement from './CSVGTextPositioningElement';
 
 export default class CSVGTextElement extends CSVGTextPositioningElement<SVGTextElement> {
@@ -5,7 +6,13 @@ export default class CSVGTextElement extends CSVGTextPositioningElement<SVGTextE
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    if (isServer()) {
+      this.el = {
+        tagName: 'text',
+      } as SVGTextElement;
+    } else {
+      this.el = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    }
   }
 
   public x(value: string) {

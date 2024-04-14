@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLQuoteElement extends CHTMLElement<HTMLQuoteElement> {
@@ -5,8 +6,13 @@ class CHTMLQuoteElement extends CHTMLElement<HTMLQuoteElement> {
 
   constructor(tag: 'blockquote' | 'q') {
     super();
-    const html = document.createElement(tag);
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: tag,
+      } as HTMLQuoteElement;
+    } else {
+      this.el = document.createElement(tag);
+    }
   }
 
   public cite(cite: string) {

@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFESpotLightElement extends CSVGElement<SVGFESpotLightElement> {
@@ -5,7 +6,16 @@ export default class CSVGFESpotLightElement extends CSVGElement<SVGFESpotLightEl
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'feSpotLight');
+    if (isServer()) {
+      this.el = {
+        tagName: 'feSpotLight',
+      } as SVGFESpotLightElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feSpotLight',
+      );
+    }
   }
 
   public x(value: string) {
@@ -63,7 +73,6 @@ export default class CSVGFESpotLightElement extends CSVGElement<SVGFESpotLightEl
     }
     return this;
   }
-  
 }
 
 export function feSpotLight() {

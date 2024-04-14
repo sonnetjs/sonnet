@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFEOffsetElement extends CSVGElement<SVGFEOffsetElement> {
@@ -5,7 +6,16 @@ export default class CSVGFEOffsetElement extends CSVGElement<SVGFEOffsetElement>
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'feOffset');
+    if (isServer()) {
+      this.el = {
+        tagName: 'feOffset',
+      } as SVGFEOffsetElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feOffset',
+      );
+    }
   }
 
   public in(value: string) {
@@ -41,15 +51,15 @@ export default class CSVGFEOffsetElement extends CSVGElement<SVGFEOffsetElement>
       this.el.setAttribute('height', value);
     }
     return this;
-  } 
+  }
 
   public result(value: string) {
     if (this.el) {
       this.el.setAttribute('result', value);
     }
     return this;
-  } 
-  
+  }
+
   public width(value: string) {
     this.el?.setAttribute('width', value);
     return this;

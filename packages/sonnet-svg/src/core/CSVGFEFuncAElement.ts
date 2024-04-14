@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGComponentTransferFunctionElement from './CSVGComponentTransferFunctionElement';
 
 export default class CSVGFEFuncAElement extends CSVGComponentTransferFunctionElement<SVGFEFuncAElement> {
@@ -5,7 +6,16 @@ export default class CSVGFEFuncAElement extends CSVGComponentTransferFunctionEle
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'feFuncA');
+    if (isServer()) {
+      this.el = {
+        tagName: 'feFuncA',
+      } as SVGFEFuncAElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feFuncA',
+      );
+    }
   }
 }
 

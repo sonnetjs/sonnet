@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFESpecularLightingElement extends CSVGElement<SVGFESpecularLightingElement> {
@@ -5,7 +6,16 @@ export default class CSVGFESpecularLightingElement extends CSVGElement<SVGFESpec
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'feSpecularLighting');
+    if (isServer()) {
+      this.el = {
+        tagName: 'feSpecularLighting',
+      } as SVGFESpecularLightingElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feSpecularLighting',
+      );
+    }
   }
 
   public in(value: string) {
@@ -55,7 +65,7 @@ export default class CSVGFESpecularLightingElement extends CSVGElement<SVGFESpec
       this.el.setAttribute('height', value);
     }
     return this;
-  } 
+  }
 
   public lightingColor(value: string) {
     if (this.el) {
@@ -69,8 +79,8 @@ export default class CSVGFESpecularLightingElement extends CSVGElement<SVGFESpec
       this.el.setAttribute('result', value);
     }
     return this;
-  } 
-  
+  }
+
   public width(value: string) {
     this.el?.setAttribute('width', value);
     return this;

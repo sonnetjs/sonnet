@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGTextContentElement from './CSVGTextContentElement';
 
 export default class CSVGTextPathElement extends CSVGTextContentElement<SVGTextPathElement> {
@@ -5,10 +6,16 @@ export default class CSVGTextPathElement extends CSVGTextContentElement<SVGTextP
 
   constructor() {
     super();
-    this.el = document.createElementNS(
-      'http://www.w3.org/2000/svg',
-      'textPath',
-    );
+    if (isServer()) {
+      this.el = {
+        tagName: 'textPath',
+      } as SVGTextPathElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'textPath',
+      );
+    }
   }
 
   public href(value: string) {

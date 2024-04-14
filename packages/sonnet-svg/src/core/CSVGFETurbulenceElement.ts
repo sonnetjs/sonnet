@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFETurbulenceElement extends CSVGElement<SVGFETurbulenceElement> {
@@ -5,7 +6,16 @@ export default class CSVGFETurbulenceElement extends CSVGElement<SVGFETurbulence
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'feTurbulence');
+    if (isServer()) {
+      this.el = {
+        tagName: 'feTurbulence',
+      } as SVGFETurbulenceElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feTurbulence',
+      );
+    }
   }
 
   public baseFrequency(value: string) {
@@ -39,7 +49,11 @@ export default class CSVGFETurbulenceElement extends CSVGElement<SVGFETurbulence
   public type(value: string) {
     if (this.el) {
       this.el.setAttribute('type', value);
-      this.el?.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:type', value);
+      this.el?.setAttributeNS(
+        'http://www.w3.org/1999/xlink',
+        'xlink:type',
+        value,
+      );
     }
     return this;
   }
@@ -57,7 +71,7 @@ export default class CSVGFETurbulenceElement extends CSVGElement<SVGFETurbulence
     }
     return this;
   }
-  
+
   public width(value: string) {
     this.el?.setAttribute('width', value);
     return this;
@@ -68,7 +82,7 @@ export default class CSVGFETurbulenceElement extends CSVGElement<SVGFETurbulence
       this.el.setAttribute('result', value);
     }
     return this;
-  } 
+  }
 }
 
 export function feTurbulence() {

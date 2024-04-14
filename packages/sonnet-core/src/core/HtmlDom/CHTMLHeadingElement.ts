@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLHeadingElement extends CHTMLElement<HTMLHeadingElement> {
@@ -5,8 +6,13 @@ class CHTMLHeadingElement extends CHTMLElement<HTMLHeadingElement> {
 
   constructor(level: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6') {
     super();
-    const html = document.createElement(level);
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: level,
+      } as HTMLHeadingElement;
+    } else {
+      this.el = document.createElement(level);
+    }
   }
 }
 

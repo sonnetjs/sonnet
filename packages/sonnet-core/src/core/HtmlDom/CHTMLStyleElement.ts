@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLStyleElement extends CHTMLElement<HTMLStyleElement> {
@@ -5,8 +6,13 @@ class CHTMLStyleElement extends CHTMLElement<HTMLStyleElement> {
 
   constructor() {
     super();
-    const html = document.createElement('style');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'style',
+      } as HTMLLinkElement;
+    } else {
+      this.el = document.createElement('style');
+    }
   }
 
   public media(value: string) {

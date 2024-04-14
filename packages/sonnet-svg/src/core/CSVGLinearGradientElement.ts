@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGGradientElement from './CSVGGradientElement';
 
 export default class CSVGLinearGradientElement extends CSVGGradientElement<SVGLinearGradientElement> {
@@ -5,7 +6,16 @@ export default class CSVGLinearGradientElement extends CSVGGradientElement<SVGLi
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+    if (isServer()) {
+      this.el = {
+        tagName: 'linearGradient',
+      } as SVGLinearGradientElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'linearGradient',
+      );
+    }
   }
 
   public gradientUnits(value: string) {

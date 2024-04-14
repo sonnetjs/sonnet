@@ -26,6 +26,8 @@ export abstract class SonnetElement {
     return this;
   }
 
+  public head() {}
+
   public script() {}
 
   public get() {}

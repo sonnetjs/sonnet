@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGGraphicsElement from './CSVGGraphicsElement';
 
 export default class CSVGImageElement extends CSVGGraphicsElement<SVGImageElement> {
@@ -5,7 +6,13 @@ export default class CSVGImageElement extends CSVGGraphicsElement<SVGImageElemen
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+    if (isServer()) {
+      this.el = {
+        tagName: 'image',
+      } as SVGImageElement;
+    } else {
+      this.el = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+    }
   }
 
   public x(value: string) {
@@ -97,7 +104,7 @@ export default class CSVGImageElement extends CSVGGraphicsElement<SVGImageElemen
     this.el?.setAttribute('systemLanguage', value);
     return this;
   }
-  
+
   public visibility(value: string) {
     this.el?.setAttribute('visibility', value);
     return this;

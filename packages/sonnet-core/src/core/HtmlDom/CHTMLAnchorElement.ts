@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLAnchorElement extends CHTMLElement<HTMLAnchorElement> {
@@ -5,10 +6,15 @@ class CHTMLAnchorElement extends CHTMLElement<HTMLAnchorElement> {
 
   constructor() {
     super();
-    const html = document.createElement('a');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'a',
+      } as HTMLAnchorElement;
+    } else {
+      this.el = document.createElement('a');
+    }
   }
-  
+
   public download(value: string) {
     if (this.el) {
       this.el.download = value;
@@ -112,7 +118,7 @@ class CHTMLAnchorElement extends CHTMLElement<HTMLAnchorElement> {
       this.el.target = value;
     }
     return this;
-  } 
+  }
 
   public text(value: string) {
     if (this.el) {
@@ -134,7 +140,6 @@ class CHTMLAnchorElement extends CHTMLElement<HTMLAnchorElement> {
     }
     return this;
   }
-
 }
 
 export function a() {

@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLDialogElement extends CHTMLElement<HTMLDialogElement> {
@@ -5,8 +6,13 @@ class CHTMLDialogElement extends CHTMLElement<HTMLDialogElement> {
 
   constructor() {
     super();
-    const html = document.createElement('dialog');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'dialog',
+      } as HTMLDialogElement;
+    } else {
+      this.el = document.createElement('dialog');
+    }
   }
 
   public open(value: boolean = true) {

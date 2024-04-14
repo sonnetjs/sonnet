@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLTableCaptionElement extends CHTMLElement<HTMLTableCaptionElement> {
@@ -5,8 +6,13 @@ class CHTMLTableCaptionElement extends CHTMLElement<HTMLTableCaptionElement> {
 
   constructor() {
     super();
-    const html = document.createElement('caption');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'caption',
+      } as HTMLTableCaptionElement;
+    } else {
+      this.el = document.createElement('caption');
+    }
   }
 }
 

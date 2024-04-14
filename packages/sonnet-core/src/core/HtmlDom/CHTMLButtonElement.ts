@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLButtonElement extends CHTMLElement<HTMLButtonElement> {
@@ -5,8 +6,13 @@ class CHTMLButtonElement extends CHTMLElement<HTMLButtonElement> {
 
   constructor() {
     super();
-    const html = document.createElement('button');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'button',
+      } as HTMLButtonElement;
+    } else {
+      this.el = document.createElement('button');
+    }
   }
 
   public disabled(value: boolean) {

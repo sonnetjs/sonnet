@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLMediaElement from './CHTMLMediaElement';
 
 class CHTMLVideoElement extends CHTMLMediaElement<HTMLVideoElement> {
@@ -5,8 +6,13 @@ class CHTMLVideoElement extends CHTMLMediaElement<HTMLVideoElement> {
 
   constructor() {
     super();
-    const html = document.createElement('video');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'video',
+      } as HTMLVideoElement;
+    } else {
+      this.el = document.createElement('video');
+    }
   }
 
   public disablePictureInPicture(value: boolean) {

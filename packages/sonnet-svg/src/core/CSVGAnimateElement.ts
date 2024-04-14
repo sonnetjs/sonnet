@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGAnimationElement from './CSVGAnimationElement';
 
 export default class CSVGAnimateElement extends CSVGAnimationElement<SVGAnimateElement> {
@@ -5,7 +6,16 @@ export default class CSVGAnimateElement extends CSVGAnimationElement<SVGAnimateE
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+    if (isServer()) {
+      this.el = {
+        tagName: 'animate',
+      } as SVGAnimateElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'animate',
+      );
+    }
   }
 
   public animate(value: string) {
@@ -32,13 +42,16 @@ export default class CSVGAnimateElement extends CSVGAnimationElement<SVGAnimateE
     this.el?.setAttribute('repeatCount', value);
     return this;
   }
-  
+
   public href(value: string) {
     this.el?.setAttribute('href', value);
-    this.el?.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', value);
+    this.el?.setAttributeNS(
+      'http://www.w3.org/1999/xlink',
+      'xlink:href',
+      value,
+    );
     return this;
   }
-
 }
 
 export function animate() {

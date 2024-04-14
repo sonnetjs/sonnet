@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLHRElement extends CHTMLElement<HTMLHRElement> {
@@ -5,8 +6,13 @@ class CHTMLHRElement extends CHTMLElement<HTMLHRElement> {
 
   constructor() {
     super();
-    const html = document.createElement('hr');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'hr',
+      } as HTMLHRElement;
+    } else {
+      this.el = document.createElement('hr');
+    }
   }
 }
 

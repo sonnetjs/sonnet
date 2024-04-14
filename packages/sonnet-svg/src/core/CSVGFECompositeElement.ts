@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFECompositeElement extends CSVGElement<SVGFECompositeElement> {
@@ -5,7 +6,16 @@ export default class CSVGFECompositeElement extends CSVGElement<SVGFECompositeEl
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'feComposite');
+    if (isServer()) {
+      this.el = {
+        tagName: 'feComposite',
+      } as SVGFECompositeElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feComposite',
+      );
+    }
   }
 
   public in(value: string) {
@@ -76,7 +86,7 @@ export default class CSVGFECompositeElement extends CSVGElement<SVGFECompositeEl
       this.el.setAttribute('result', value);
     }
     return this;
-  } 
+  }
 }
 
 export function feComposite() {

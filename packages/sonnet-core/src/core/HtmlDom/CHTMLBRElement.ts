@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLBRElement extends CHTMLElement<HTMLBRElement> {
@@ -5,8 +6,13 @@ class CHTMLBRElement extends CHTMLElement<HTMLBRElement> {
 
   constructor() {
     super();
-    const html = document.createElement('br');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'br',
+      } as HTMLBRElement;
+    } else {
+      this.el = document.createElement('br');
+    }
   }
 }
 

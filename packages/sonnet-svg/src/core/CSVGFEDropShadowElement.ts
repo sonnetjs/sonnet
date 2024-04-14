@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFEDropShadowElement extends CSVGElement<SVGFEDropShadowElement> {
@@ -5,7 +6,16 @@ export default class CSVGFEDropShadowElement extends CSVGElement<SVGFEDropShadow
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'feDropShadow');
+    if (isServer()) {
+      this.el = {
+        tagName: 'feDropShadow',
+      } as SVGFEDropShadowElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feDropShadow',
+      );
+    }
   }
 
   public dx(value: string) {
@@ -55,15 +65,15 @@ export default class CSVGFEDropShadowElement extends CSVGElement<SVGFEDropShadow
       this.el.setAttribute('height', value);
     }
     return this;
-  } 
+  }
 
   public result(value: string) {
     if (this.el) {
       this.el.setAttribute('result', value);
     }
     return this;
-  } 
-  
+  }
+
   public width(value: string) {
     this.el?.setAttribute('width', value);
     return this;

@@ -1,3 +1,5 @@
+import { isServer } from '../../utils';
+import { serverParse } from '../../utils/parser';
 import CElement from './CElement';
 
 export default class CHTMLElement<T> extends CElement {
@@ -6,8 +8,13 @@ export default class CHTMLElement<T> extends CElement {
   constructor(tag?: string) {
     super();
     if (tag) {
-      const html = document.createElement(tag);
-      this.el = html;
+      if (isServer()) {
+        this.el = {
+          tagName: tag,
+        } as HTMLElement;
+      } else {
+        this.el = document.createElement(tag);
+      }
     }
   }
 
@@ -153,6 +160,9 @@ export default class CHTMLElement<T> extends CElement {
   }
 
   public get() {
+    if (isServer()) {
+      return serverParse<T>(this.el as HTMLElement);
+    }
     return this.el as T;
   }
 }

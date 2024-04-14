@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLEmbedElement extends CHTMLElement<HTMLEmbedElement> {
@@ -5,8 +6,13 @@ class CHTMLEmbedElement extends CHTMLElement<HTMLEmbedElement> {
 
   constructor() {
     super();
-    const html = document.createElement('embed');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'embed',
+      } as HTMLEmbedElement;
+    } else {
+      this.el = document.createElement('embed');
+    }
   }
 
   public height(value: string) {

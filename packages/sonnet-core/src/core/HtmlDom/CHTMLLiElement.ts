@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLLIElement extends CHTMLElement<HTMLLIElement> {
@@ -5,8 +6,13 @@ class CHTMLLIElement extends CHTMLElement<HTMLLIElement> {
 
   constructor() {
     super();
-    const html = document.createElement('li');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'li',
+      } as HTMLLIElement;
+    } else {
+      this.el = document.createElement('li');
+    }
   }
 
   public value(value: string) {

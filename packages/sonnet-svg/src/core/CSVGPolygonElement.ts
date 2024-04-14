@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGGeometryElement from './CSVGGeometryElement';
 
 export default class CSVGPolygonElement extends CSVGGeometryElement<SVGPolygonElement> {
@@ -5,7 +6,16 @@ export default class CSVGPolygonElement extends CSVGGeometryElement<SVGPolygonEl
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    if (isServer()) {
+      this.el = {
+        tagName: 'polygon',
+      } as SVGPolygonElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'polygon',
+      );
+    }
   }
 
   public points(value: string) {
@@ -50,7 +60,7 @@ export default class CSVGPolygonElement extends CSVGGeometryElement<SVGPolygonEl
     this.el?.setAttribute('systemLanguage', value);
     return this;
   }
-  
+
   public visibility(value: string) {
     this.el?.setAttribute('visibility', value);
     return this;

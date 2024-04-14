@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFEConvolveMatrixElement extends CSVGElement<SVGFEConvolveMatrixElement> {
@@ -5,7 +6,16 @@ export default class CSVGFEConvolveMatrixElement extends CSVGElement<SVGFEConvol
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'feConvolveMatrix');
+    if (isServer()) {
+      this.el = {
+        tagName: 'feConvolveMatrix',
+      } as SVGFEConvolveMatrixElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feConvolveMatrix',
+      );
+    }
   }
 
   public in(value: string) {
@@ -90,8 +100,8 @@ export default class CSVGFEConvolveMatrixElement extends CSVGElement<SVGFEConvol
       this.el.setAttribute('result', value);
     }
     return this;
-  } 
-  
+  }
+
   public width(value: string) {
     this.el?.setAttribute('width', value);
     return this;

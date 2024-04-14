@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLLinkElement extends CHTMLElement<HTMLLinkElement> {
@@ -5,8 +6,13 @@ class CHTMLLinkElement extends CHTMLElement<HTMLLinkElement> {
 
   constructor() {
     super();
-    const html = document.createElement('link');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'link',
+      } as HTMLLinkElement;
+    } else {
+      this.el = document.createElement('link');
+    }
   }
 
   public as(value: string) {

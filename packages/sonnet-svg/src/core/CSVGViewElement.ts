@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGViewElement extends CSVGElement<SVGViewElement> {
@@ -5,7 +6,13 @@ export default class CSVGViewElement extends CSVGElement<SVGViewElement> {
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'view');
+    if (isServer()) {
+      this.el = {
+        tagName: 'view',
+      } as SVGViewElement;
+    } else {
+      this.el = document.createElementNS('http://www.w3.org/2000/svg', 'view');
+    }
   }
 
   public viewBox(value: string) {

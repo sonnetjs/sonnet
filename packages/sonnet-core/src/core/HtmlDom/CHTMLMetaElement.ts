@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLMetaElement extends CHTMLElement<HTMLMetaElement> {
@@ -5,8 +6,13 @@ class CHTMLMetaElement extends CHTMLElement<HTMLMetaElement> {
 
   constructor() {
     super();
-    const html = document.createElement('meta');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'meta',
+      } as HTMLMetaElement;
+    } else {
+      this.el = document.createElement('meta');
+    }
   }
 
   public content(value: string) {

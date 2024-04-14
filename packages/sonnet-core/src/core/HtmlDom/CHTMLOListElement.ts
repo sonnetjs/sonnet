@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLOListElement extends CHTMLElement<HTMLOListElement> {
@@ -5,8 +6,13 @@ class CHTMLOListElement extends CHTMLElement<HTMLOListElement> {
 
   constructor() {
     super();
-    const html = document.createElement('ol');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'ol',
+      } as HTMLOListElement;
+    } else {
+      this.el = document.createElement('ol');
+    }
   }
 
   public reversed(value: boolean) {

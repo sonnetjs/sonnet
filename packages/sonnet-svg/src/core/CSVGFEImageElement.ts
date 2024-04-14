@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFEImageElement extends CSVGElement<SVGFEImageElement> {
@@ -5,7 +6,16 @@ export default class CSVGFEImageElement extends CSVGElement<SVGFEImageElement> {
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'feImage');
+    if (isServer()) {
+      this.el = {
+        tagName: 'feImage',
+      } as SVGFEImageElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feImage',
+      );
+    }
   }
 
   public crossOrigin(value: string) {
@@ -42,15 +52,15 @@ export default class CSVGFEImageElement extends CSVGElement<SVGFEImageElement> {
       this.el.setAttribute('height', value);
     }
     return this;
-  } 
+  }
 
   public result(value: string) {
     if (this.el) {
       this.el.setAttribute('result', value);
     }
     return this;
-  } 
-  
+  }
+
   public width(value: string) {
     this.el?.setAttribute('width', value);
     return this;

@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLTitleElement extends CHTMLElement<HTMLTitleElement> {
@@ -5,8 +6,13 @@ class CHTMLTitleElement extends CHTMLElement<HTMLTitleElement> {
 
   constructor() {
     super();
-    const html = document.createElement('title');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'title',
+      } as HTMLTitleElement;
+    } else {
+      this.el = document.createElement('title');
+    }
   }
 
   public text(text: string) {

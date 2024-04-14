@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGAElemenDesc extends CSVGElement<SVGDescElement> {
@@ -5,7 +6,13 @@ export default class CSVGAElemenDesc extends CSVGElement<SVGDescElement> {
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'desc');
+    if (isServer()) {
+      this.el = {
+        tagName: 'desc',
+      } as SVGDescElement;
+    } else {
+      this.el = document.createElementNS('http://www.w3.org/2000/svg', 'desc');
+    }
   }
 }
 

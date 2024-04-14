@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGGeometryElement from './CSVGGeometryElement';
 
 export default class CSVGCircleElement extends CSVGGeometryElement<SVGCircleElement> {
@@ -5,7 +6,16 @@ export default class CSVGCircleElement extends CSVGGeometryElement<SVGCircleElem
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    if (isServer()) {
+      this.el = {
+        tagName: 'circle',
+      } as SVGCircleElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'circle',
+      );
+    }
   }
 
   public cx(value: string) {

@@ -1,3 +1,5 @@
+import { isServer } from '../utils';
+import { serverParse } from '../utils/parser';
 import CElement from './CElement';
 
 export default class CMathMLElement extends CElement {
@@ -82,6 +84,9 @@ export default class CMathMLElement extends CElement {
   }
 
   public get() {
+    if (isServer()) {
+      return serverParse<MathMLElement>(this.el as MathMLElement);
+    }
     return this.el as MathMLElement;
   }
 }

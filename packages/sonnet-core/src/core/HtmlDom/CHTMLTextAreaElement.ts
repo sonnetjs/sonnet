@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLTextAreaElement extends CHTMLElement<HTMLTextAreaElement> {
@@ -5,8 +6,13 @@ class CHTMLTextAreaElement extends CHTMLElement<HTMLTextAreaElement> {
 
   constructor() {
     super();
-    const html = document.createElement('textarea');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'textarea',
+      } as HTMLTextAreaElement;
+    } else {
+      this.el = document.createElement('textarea');
+    }
   }
 
   public autocapitalize(value: string) {

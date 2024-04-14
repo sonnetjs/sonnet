@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLLabelElement extends CHTMLElement<HTMLLabelElement> {
@@ -5,8 +6,13 @@ class CHTMLLabelElement extends CHTMLElement<HTMLLabelElement> {
 
   constructor() {
     super();
-    const html = document.createElement('label');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'label',
+      } as HTMLLabelElement;
+    } else {
+      this.el = document.createElement('label');
+    }
   }
 
   public htmlFor(value: string) {

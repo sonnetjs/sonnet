@@ -1,3 +1,5 @@
+import { isServer } from '../utils';
+import { serverParse } from '../utils/parser';
 import CElement from './CElement';
 
 export default class CSVGElement<T> extends CElement {
@@ -73,6 +75,9 @@ export default class CSVGElement<T> extends CElement {
   }
 
   public get() {
+    if (isServer()) {
+      return serverParse<T>(this.el as SVGElement) as T;
+    }
     return this.el as T;
   }
 }

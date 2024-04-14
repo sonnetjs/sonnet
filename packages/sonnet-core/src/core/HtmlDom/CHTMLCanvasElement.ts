@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLCanvasElement extends CHTMLElement<HTMLCanvasElement> {
@@ -5,8 +6,13 @@ class CHTMLCanvasElement extends CHTMLElement<HTMLCanvasElement> {
 
   constructor() {
     super();
-    const html = document.createElement('canvas');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'canvas',
+      } as HTMLCanvasElement;
+    } else {
+      this.el = document.createElement('canvas');
+    }
   }
 
   public height(value: number) {

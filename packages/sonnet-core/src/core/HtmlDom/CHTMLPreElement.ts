@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLPreElement extends CHTMLElement<HTMLPreElement> {
@@ -5,8 +6,13 @@ class CHTMLPreElement extends CHTMLElement<HTMLPreElement> {
 
   constructor() {
     super();
-    const html = document.createElement('pre');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'pre',
+      } as HTMLPreElement;
+    } else {
+      this.el = document.createElement('pre');
+    }
   }
 }
 

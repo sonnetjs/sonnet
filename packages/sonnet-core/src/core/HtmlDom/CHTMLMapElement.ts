@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLMapElement extends CHTMLElement<HTMLMapElement> {
@@ -5,8 +6,13 @@ class CHTMLMapElement extends CHTMLElement<HTMLMapElement> {
 
   constructor() {
     super();
-    const html = document.createElement('map');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'map',
+      } as HTMLMapElement;
+    } else {
+      this.el = document.createElement('map');
+    }
   }
 
   public name(value: string) {

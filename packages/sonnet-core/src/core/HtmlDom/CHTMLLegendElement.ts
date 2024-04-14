@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLLegendElement extends CHTMLElement<HTMLLegendElement> {
@@ -5,8 +6,13 @@ class CHTMLLegendElement extends CHTMLElement<HTMLLegendElement> {
 
   constructor() {
     super();
-    const html = document.createElement('legend');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'legend',
+      } as HTMLLegendElement;
+    } else {
+      this.el = document.createElement('legend');
+    }
   }
 }
 

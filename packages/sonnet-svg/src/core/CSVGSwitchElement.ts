@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGGraphicsElement from './CSVGGraphicsElement';
 
 export default class CSVGSwitchElement extends CSVGGraphicsElement<SVGSwitchElement> {
@@ -5,7 +6,16 @@ export default class CSVGSwitchElement extends CSVGGraphicsElement<SVGSwitchElem
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'switch');
+    if (isServer()) {
+      this.el = {
+        tagName: 'switch',
+      } as SVGSwitchElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'switch',
+      );
+    }
   }
 
   public opacity(value: string) {

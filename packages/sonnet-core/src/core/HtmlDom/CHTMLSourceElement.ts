@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLSourceElement extends CHTMLElement<HTMLSourceElement> {
@@ -5,8 +6,13 @@ class CHTMLSourceElement extends CHTMLElement<HTMLSourceElement> {
 
   constructor() {
     super();
-    const html = document.createElement('source');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'source',
+      } as HTMLSourceElement;
+    } else {
+      this.el = document.createElement('source');
+    }
   }
 
   public height(value: number) {

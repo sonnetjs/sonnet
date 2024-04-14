@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLImageElement extends CHTMLElement<HTMLImageElement> {
@@ -5,8 +6,13 @@ class CHTMLImageElement extends CHTMLElement<HTMLImageElement> {
 
   constructor() {
     super();
-    const html = document.createElement('img');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'img',
+      } as HTMLImageElement;
+    } else {
+      this.el = document.createElement('img');
+    }
   }
 
   public alt(alt: string) {

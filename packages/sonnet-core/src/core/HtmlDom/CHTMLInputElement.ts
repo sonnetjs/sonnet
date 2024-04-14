@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLInputElement extends CHTMLElement<HTMLInputElement> {
@@ -5,8 +6,13 @@ class CHTMLInputElement extends CHTMLElement<HTMLInputElement> {
 
   constructor() {
     super();
-    const html = document.createElement('input');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'input',
+      } as HTMLInputElement;
+    } else {
+      this.el = document.createElement('input');
+    }
   }
 
   public defaultValue(value: string) {

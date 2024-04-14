@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGMetadataElement extends CSVGElement<SVGMetadataElement> {
@@ -5,7 +6,16 @@ export default class CSVGMetadataElement extends CSVGElement<SVGMetadataElement>
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'metadata');
+    if (isServer()) {
+      this.el = {
+        tagName: 'metadata',
+      } as SVGMetadataElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'metadata',
+      );
+    }
   }
 }
 

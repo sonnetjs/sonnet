@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFEBlendElement extends CSVGElement<SVGFEBlendElement> {
@@ -5,7 +6,16 @@ export default class CSVGFEBlendElement extends CSVGElement<SVGFEBlendElement> {
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'feBlend');
+    if (isServer()) {
+      this.el = {
+        tagName: 'feBlend',
+      } as SVGFEBlendElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feBlend',
+      );
+    }
   }
 
   public in(value: string) {

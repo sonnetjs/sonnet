@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGMaskElement extends CSVGElement<SVGMaskElement> {
@@ -5,7 +6,13 @@ export default class CSVGMaskElement extends CSVGElement<SVGMaskElement> {
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'mask');
+    if (isServer()) {
+      this.el = {
+        tagName: 'mask',
+      } as SVGMaskElement;
+    } else {
+      this.el = document.createElementNS('http://www.w3.org/2000/svg', 'mask');
+    }
   }
 
   public height(value: string) {

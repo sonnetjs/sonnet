@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLTimeElement extends CHTMLElement<HTMLTimeElement> {
@@ -5,8 +6,13 @@ class CHTMLTimeElement extends CHTMLElement<HTMLTimeElement> {
 
   constructor() {
     super();
-    const html = document.createElement('time');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'time',
+      } as HTMLTimeElement;
+    } else {
+      this.el = document.createElement('time');
+    }
   }
 }
 

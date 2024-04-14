@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGGradientElement from './CSVGGradientElement';
 
 export default class CSVGRadialGradientElement extends CSVGGradientElement<SVGRadialGradientElement> {
@@ -5,10 +6,16 @@ export default class CSVGRadialGradientElement extends CSVGGradientElement<SVGRa
 
   constructor() {
     super();
-    this.el = document.createElementNS(
-      'http://www.w3.org/2000/svg',
-      'radialGradient',
-    );
+    if (isServer()) {
+      this.el = {
+        tagName: 'radialGradient',
+      } as SVGRadialGradientElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'radialGradient',
+      );
+    }
   }
 
   public cx(value: string) {

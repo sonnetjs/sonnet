@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGScriptElement extends CSVGElement<SVGScriptElement> {
@@ -5,7 +6,16 @@ export default class CSVGScriptElement extends CSVGElement<SVGScriptElement> {
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'script');
+    if (isServer()) {
+      this.el = {
+        tagName: 'script',
+      } as SVGScriptElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'script',
+      );
+    }
   }
 
   public type(value: string) {

@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFilterElement extends CSVGElement<SVGFilterElement> {
@@ -5,7 +6,16 @@ export default class CSVGFilterElement extends CSVGElement<SVGFilterElement> {
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
+    if (isServer()) {
+      this.el = {
+        tagName: 'filter',
+      } as SVGFilterElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'filter',
+      );
+    }
   }
 
   public x(value: string) {
@@ -53,7 +63,11 @@ export default class CSVGFilterElement extends CSVGElement<SVGFilterElement> {
   public href(value: string) {
     if (this.el) {
       this.el.setAttribute('href', value);
-      this.el.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', value);
+      this.el.setAttributeNS(
+        'http://www.w3.org/1999/xlink',
+        'xlink:href',
+        value,
+      );
     }
     return this;
   }

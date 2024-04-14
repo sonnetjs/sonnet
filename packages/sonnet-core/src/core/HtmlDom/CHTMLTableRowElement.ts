@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLTableRowElement extends CHTMLElement<HTMLTableRowElement> {
@@ -5,8 +6,13 @@ class CHTMLTableRowElement extends CHTMLElement<HTMLTableRowElement> {
 
   constructor() {
     super();
-    const html = document.createElement('tr');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'tr',
+      } as HTMLTableRowElement;
+    } else {
+      this.el = document.createElement('tr');
+    }
   }
 }
 

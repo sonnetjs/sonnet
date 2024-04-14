@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLFormElement extends CHTMLElement<HTMLFormElement> {
@@ -5,8 +6,13 @@ class CHTMLFormElement extends CHTMLElement<HTMLFormElement> {
 
   constructor() {
     super();
-    const html = document.createElement('form');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'form',
+      } as HTMLFormElement;
+    } else {
+      this.el = document.createElement('form');
+    }
   }
 
   public name(value: string) {

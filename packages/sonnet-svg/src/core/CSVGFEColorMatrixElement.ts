@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFEColorMatrixElement extends CSVGElement<SVGFEColorMatrixElement> {
@@ -5,10 +6,16 @@ export default class CSVGFEColorMatrixElement extends CSVGElement<SVGFEColorMatr
 
   constructor() {
     super();
-    this.el = document.createElementNS(
-      'http://www.w3.org/2000/svg',
-      'feColorMatrix',
-    );
+    if (isServer()) {
+      this.el = {
+        tagName: 'feColorMatrix',
+      } as SVGFEColorMatrixElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feColorMatrix',
+      );
+    }
   }
 
   public in(value: string) {

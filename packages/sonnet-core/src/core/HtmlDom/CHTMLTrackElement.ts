@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLTrackElement extends CHTMLElement<HTMLTrackElement> {
@@ -5,8 +6,13 @@ class CHTMLTrackElement extends CHTMLElement<HTMLTrackElement> {
 
   constructor() {
     super();
-    const html = document.createElement('track');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'track',
+      } as HTMLTrackElement;
+    } else {
+      this.el = document.createElement('track');
+    }
   }
 
   public kind(value: string) {

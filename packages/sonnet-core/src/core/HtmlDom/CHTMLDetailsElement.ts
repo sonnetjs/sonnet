@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLDetailsElement extends CHTMLElement<HTMLDetailsElement> {
@@ -5,8 +6,13 @@ class CHTMLDetailsElement extends CHTMLElement<HTMLDetailsElement> {
 
   constructor() {
     super();
-    const html = document.createElement('details');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'details',
+      } as HTMLDetailsElement;
+    } else {
+      this.el = document.createElement('details');
+    }
   }
 
   public open(value: boolean = true) {

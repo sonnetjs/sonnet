@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLAreaElement extends CHTMLElement<HTMLAreaElement> {
@@ -5,8 +6,13 @@ class CHTMLAreaElement extends CHTMLElement<HTMLAreaElement> {
 
   constructor() {
     super();
-    const html = document.createElement('area');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'area',
+      } as HTMLAreaElement;
+    } else {
+      this.el = document.createElement('area');
+    }
   }
 
   public alt(value: string) {
@@ -40,7 +46,7 @@ class CHTMLAreaElement extends CHTMLElement<HTMLAreaElement> {
   }
 
   public href(value: string) {
-    this.el.href = value
+    this.el.href = value;
     return this;
   }
 
@@ -98,7 +104,6 @@ class CHTMLAreaElement extends CHTMLElement<HTMLAreaElement> {
     this.el.username = value;
     return this;
   }
-
 }
 
 export function area() {

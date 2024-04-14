@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLBodyElement extends CHTMLElement<HTMLBodyElement> {
@@ -5,8 +6,13 @@ class CHTMLBodyElement extends CHTMLElement<HTMLBodyElement> {
 
   constructor() {
     super();
-    const html = document.createElement('body');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'body',
+      } as HTMLBodyElement;
+    } else {
+      this.el = document.createElement('body');
+    }
   }
 }
 

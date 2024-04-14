@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFEFloodElement extends CSVGElement<SVGFEFloodElement> {
@@ -5,7 +6,16 @@ export default class CSVGFEFloodElement extends CSVGElement<SVGFEFloodElement> {
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'feFlood');
+    if (isServer()) {
+      this.el = {
+        tagName: 'feFlood',
+      } as SVGFEFloodElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feFlood',
+      );
+    }
   }
 
   public floodColor(value: string) {
@@ -34,15 +44,15 @@ export default class CSVGFEFloodElement extends CSVGElement<SVGFEFloodElement> {
       this.el.setAttribute('height', value);
     }
     return this;
-  } 
+  }
 
   public result(value: string) {
     if (this.el) {
       this.el.setAttribute('result', value);
     }
     return this;
-  } 
-  
+  }
+
   public width(value: string) {
     this.el?.setAttribute('width', value);
     return this;

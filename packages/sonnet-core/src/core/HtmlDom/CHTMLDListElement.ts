@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLDListElement extends CHTMLElement<HTMLDListElement> {
@@ -5,8 +6,13 @@ class CHTMLDListElement extends CHTMLElement<HTMLDListElement> {
 
   constructor() {
     super();
-    const html = document.createElement('dl');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'dl',
+      } as HTMLDListElement;
+    } else {
+      this.el = document.createElement('dl');
+    }
   }
 }
 

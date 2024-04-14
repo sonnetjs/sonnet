@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLMediaElement from './CHTMLMediaElement';
 
 class CHTMLAudioElement extends CHTMLMediaElement<HTMLAudioElement> {
@@ -5,8 +6,13 @@ class CHTMLAudioElement extends CHTMLMediaElement<HTMLAudioElement> {
 
   constructor() {
     super();
-    const html = document.createElement('audio');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'audio',
+      } as HTMLAudioElement;
+    } else {
+      this.el = document.createElement('audio');
+    }
   }
 }
 

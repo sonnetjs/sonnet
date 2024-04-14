@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLDataElement extends CHTMLElement<HTMLDataElement> {
@@ -5,8 +6,13 @@ class CHTMLDataElement extends CHTMLElement<HTMLDataElement> {
 
   constructor() {
     super();
-    const html = document.createElement('data');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'data',
+      } as HTMLDataElement;
+    } else {
+      this.el = document.createElement('data');
+    }
   }
 
   public value(value: string) {

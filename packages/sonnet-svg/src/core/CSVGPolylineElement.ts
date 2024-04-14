@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGGeometryElement from './CSVGGeometryElement';
 
 export default class CSVGPolylineElement extends CSVGGeometryElement<SVGPolylineElement> {
@@ -5,7 +6,16 @@ export default class CSVGPolylineElement extends CSVGGeometryElement<SVGPolyline
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+    if (isServer()) {
+      this.el = {
+        tagName: 'polyline',
+      } as SVGPolylineElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'polyline',
+      );
+    }
   }
 
   public points(value: string) {
@@ -50,7 +60,7 @@ export default class CSVGPolylineElement extends CSVGGeometryElement<SVGPolyline
     this.el?.setAttribute('systemLanguage', value);
     return this;
   }
-  
+
   public visibility(value: string) {
     this.el?.setAttribute('visibility', value);
     return this;

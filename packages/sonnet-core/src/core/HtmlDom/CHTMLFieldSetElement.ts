@@ -1,3 +1,4 @@
+import { isServer } from '../../utils';
 import CHTMLElement from './CHTMLElement';
 
 class CHTMLFieldSetElement extends CHTMLElement<HTMLFieldSetElement> {
@@ -5,8 +6,13 @@ class CHTMLFieldSetElement extends CHTMLElement<HTMLFieldSetElement> {
 
   constructor() {
     super();
-    const html = document.createElement('fieldset');
-    this.el = html;
+    if (isServer()) {
+      this.el = {
+        tagName: 'fieldset',
+      } as HTMLFieldSetElement;
+    } else {
+      this.el = document.createElement('fieldset');
+    }
   }
 
   public disabled(value: boolean) {

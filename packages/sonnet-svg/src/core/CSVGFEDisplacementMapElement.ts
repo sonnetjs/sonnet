@@ -1,3 +1,4 @@
+import { isServer } from '../utils';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGFEDisplacementMapElement extends CSVGElement<SVGFEDisplacementMapElement> {
@@ -5,7 +6,16 @@ export default class CSVGFEDisplacementMapElement extends CSVGElement<SVGFEDispl
 
   constructor() {
     super();
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'feDisplacementMap');
+    if (isServer()) {
+      this.el = {
+        tagName: 'feDisplacementMap',
+      } as SVGFEDisplacementMapElement;
+    } else {
+      this.el = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'feDisplacementMap',
+      );
+    }
   }
 
   public in(value: string) {
@@ -55,15 +65,15 @@ export default class CSVGFEDisplacementMapElement extends CSVGElement<SVGFEDispl
       this.el.setAttribute('height', value);
     }
     return this;
-  } 
+  }
 
   public result(value: string) {
     if (this.el) {
       this.el.setAttribute('result', value);
     }
     return this;
-  } 
-  
+  }
+
   public width(value: string) {
     this.el?.setAttribute('width', value);
     return this;
