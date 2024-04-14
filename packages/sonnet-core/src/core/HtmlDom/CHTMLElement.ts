@@ -154,7 +154,11 @@ export default class CHTMLElement<T> extends CElement {
 
   public children(...value: (Node | string)[]) {
     if (this.el) {
-      this.el.append(...value);
+      if (isServer()) {
+        this.el.innerHTML = value.join('');
+      } else {
+        this.el.append(...value);
+      }
     }
     return this;
   }
