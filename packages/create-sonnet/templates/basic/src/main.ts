@@ -1,9 +1,6 @@
 import './style.css';
-import { render } from '@sonnetjs/core';
+import { createApp } from '@sonnetjs/core';
 import Counter from './Counter';
 
-(async () => {
-  const CounterComponent = new Counter();
-  render('app', await CounterComponent.get());
-  CounterComponent.loadScripts();
-})();
+const app = createApp(new Counter());
+app.mount('#app');
