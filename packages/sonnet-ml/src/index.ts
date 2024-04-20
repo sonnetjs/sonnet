@@ -1,5 +1,3 @@
-export { render, $component, isServer } from './utils';
-export { serverParse } from './utils/parser';
 export {
   math,
   menclose,

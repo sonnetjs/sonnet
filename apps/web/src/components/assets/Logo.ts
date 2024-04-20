@@ -1,4 +1,4 @@
-import { div } from '@sonnetjs/core';
+import { div } from '@sonnetjs/html';
 
 const Logo = () => {
   return div()

@@ -1,4 +1,4 @@
-import { isServer } from '../utils';
+import { isServer } from '@sonnetjs/shared';
 import CSVGGradientElement from './CSVGGradientElement';
 
 export default class CSVGRadialGradientElement extends CSVGGradientElement<SVGRadialGradientElement> {

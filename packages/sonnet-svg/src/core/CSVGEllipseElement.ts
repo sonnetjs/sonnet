@@ -1,4 +1,4 @@
-import { isServer } from '../utils';
+import { isServer } from '@sonnetjs/shared';
 import CSVGGeometryElement from './CSVGGeometryElement';
 
 export default class CSVGEllipseElement extends CSVGGeometryElement<SVGEllipseElement> {

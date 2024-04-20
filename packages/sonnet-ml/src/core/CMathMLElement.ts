@@ -1,8 +1,5 @@
-import { isServer } from '../utils';
-import { serverParse } from '../utils/parser';
-import CElement from './CElement';
-
-export default class CMathMLElement extends CElement {
+import { CElement } from '@sonnetjs/dom';
+export default class CMathMLElement extends CElement<MathMLElement> {
   public el?: MathMLElement;
 
   constructor(tag: string) {
@@ -74,24 +71,6 @@ export default class CMathMLElement extends CElement {
       this.el.setAttribute('tabindex', value);
     }
     return this;
-  }
-
-  public children(...value: (Node | string)[]) {
-    if (this.el) {
-      if (isServer()) {
-        this.el.innerHTML = value.join('');
-      } else {
-        this.el.append(...value);
-      }
-    }
-    return this;
-  }
-
-  public get() {
-    if (isServer()) {
-      return serverParse<MathMLElement>(this.el as MathMLElement);
-    }
-    return this.el as MathMLElement;
   }
 }
 

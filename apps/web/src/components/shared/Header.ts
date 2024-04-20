@@ -1,4 +1,4 @@
-import { a, div, header, img, nav } from '@sonnetjs/core';
+import { a, div, header, img, nav } from '@sonnetjs/html';
 import { Logo } from '../assets';
 
 const Header = () => {

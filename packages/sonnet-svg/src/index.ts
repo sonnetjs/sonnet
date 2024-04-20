@@ -1,5 +1,3 @@
-export { render, $component, isServer } from './utils';
-export { serverParse } from './utils/parser';
 export { a } from './core/CSVGAElement';
 export { animate } from './core/CSVGAnimateElement';
 export { animateMotion } from './core/CSVGAnimateMotionElement';

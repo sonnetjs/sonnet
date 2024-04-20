@@ -1,8 +1,5 @@
-import { isServer } from '../utils';
-import { serverParse } from '../utils/parser';
-import CElement from './CElement';
-
-export default class CSVGElement<T> extends CElement {
+import { CElement } from '@sonnetjs/dom';
+export default class CSVGElement<T> extends CElement<T> {
   public declare el?: SVGElement;
 
   constructor() {
@@ -65,23 +62,5 @@ export default class CSVGElement<T> extends CElement {
     this.el?.setAttribute('transform-origin', value);
 
     return this;
-  }
-
-  public children(...value: (Node | string)[]) {
-    if (this.el) {
-      if (isServer()) {
-        this.el.innerHTML = value.join('');
-      } else {
-        this.el.append(...value);
-      }
-    }
-    return this;
-  }
-
-  public get() {
-    if (isServer()) {
-      return serverParse<T>(this.el as SVGElement) as T;
-    }
-    return this.el as T;
   }
 }

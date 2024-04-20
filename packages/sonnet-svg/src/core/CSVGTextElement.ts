@@ -1,4 +1,4 @@
-import { isServer } from '../utils';
+import { isServer } from '@sonnetjs/shared';
 import CSVGTextPositioningElement from './CSVGTextPositioningElement';
 
 export default class CSVGTextElement extends CSVGTextPositioningElement<SVGTextElement> {

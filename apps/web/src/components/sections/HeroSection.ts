@@ -1,9 +1,10 @@
-import { SonnetElement, a, div, section } from '@sonnetjs/core';
+import { SonnetComponent } from '@sonnetjs/core';
+import { a, div, section } from '@sonnetjs/html';
 import { TickIcon, CopyIcon, SquarePatterns } from '../assets';
 
 const NPX_COMMAND = 'npx create-sonnet-app';
 
-class HeroSection extends SonnetElement {
+class HeroSection extends SonnetComponent {
   public script() {
     const copyEl = document.getElementById('copy') as HTMLDivElement;
     copyEl.onclick = () => {

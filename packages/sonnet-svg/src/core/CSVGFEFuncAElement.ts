@@ -1,4 +1,4 @@
-import { isServer } from '../utils';
+import { isServer } from '@sonnetjs/shared';
 import CSVGComponentTransferFunctionElement from './CSVGComponentTransferFunctionElement';
 
 export default class CSVGFEFuncAElement extends CSVGComponentTransferFunctionElement<SVGFEFuncAElement> {

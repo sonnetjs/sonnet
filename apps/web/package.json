@@ -9,7 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@sonnetjs/core": "*"
+    "@sonnetjs/core": "*",
+    "@sonnetjs/html": "*"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",

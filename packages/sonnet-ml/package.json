@@ -1,6 +1,6 @@
 {
   "name": "@sonnetjs/mathml",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "files": [
     "dist"
   ],
@@ -23,8 +23,12 @@
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
     "eslint": "^8.57.0",
-    "typescript": "^5.3.3",
-    "tsup": "^8.0.2"
+    "tsup": "^8.0.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@sonnetjs/dom": "*",
+    "@sonnetjs/shared": "*"
   },
   "publishConfig": {
     "access": "public"

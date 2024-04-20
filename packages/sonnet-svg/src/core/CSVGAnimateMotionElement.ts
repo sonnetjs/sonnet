@@ -1,4 +1,4 @@
-import { isServer } from '../utils';
+import { isServer } from '@sonnetjs/shared';
 import CSVGAnimationElement from './CSVGAnimationElement';
 
 export default class CSVGAnimateMotionElement extends CSVGAnimationElement<SVGAnimateMotionElement> {

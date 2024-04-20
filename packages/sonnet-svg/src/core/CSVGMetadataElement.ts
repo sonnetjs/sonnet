@@ -1,4 +1,4 @@
-import { isServer } from '../utils';
+import { isServer } from '@sonnetjs/shared';
 import CSVGElement from './CSVGElement';
 
 export default class CSVGMetadataElement extends CSVGElement<SVGMetadataElement> {

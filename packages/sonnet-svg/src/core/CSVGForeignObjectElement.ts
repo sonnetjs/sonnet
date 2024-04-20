@@ -1,4 +1,4 @@
-import { isServer } from '../utils';
+import { isServer } from '@sonnetjs/shared';
 import CSVGGraphicsElement from './CSVGGraphicsElement';
 
 export default class CSVGForeignObjectElement extends CSVGGraphicsElement<SVGForeignObjectElement> {

@@ -1,4 +1,4 @@
-import { div, footer } from '@sonnetjs/core';
+import { div, footer } from '@sonnetjs/html';
 
 const Footer = () => {
   return footer()
