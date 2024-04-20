@@ -1,6 +1,7 @@
-import { SonnetElement, a, button, div, h1, img, p } from '@sonnetjs/core';
+import { SonnetComponent } from '@sonnetjs/core';
+import { a, button, div, h1, img, p } from '@sonnetjs/html';
 
-class Counter extends SonnetElement {
+class Counter extends SonnetComponent {
   counter = 0;
 
   public script() {
