@@ -3,12 +3,19 @@ import SonnetComponent from '../abstract/SonnetComponent';
 import { Sonnet } from './Sonnet';
 
 class SonnetClient extends Sonnet {
+  private _ssr: boolean = false;
+
   constructor(component: SonnetComponent) {
     super(component);
   }
 
+  ssr(value: boolean = true) {
+    this._ssr = value;
+    return this;
+  }
+
   mount(selector: string) {
-    if (isBrowser()) {
+    if (!this._ssr && isBrowser()) {
       const el = document.querySelector(selector);
       if (el) {
         const component = this._component.get();
