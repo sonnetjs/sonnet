@@ -2,5 +2,5 @@ import './style.css';
 import { createApp } from '@sonnetjs/core';
 import Counter from './Counter';
 
-const app = createApp(Counter());
+const app = createApp(new Counter());
 app.mount('#app');

@@ -1,6 +1,9 @@
 import { isBrowser } from '@sonnetjs/shared';
 import SonnetComponent from '../abstract/SonnetComponent';
 import { Sonnet } from './Sonnet';
+import { EventEmitter } from './Event';
+
+const event = EventEmitter.getInstance();
 
 class SonnetClient extends Sonnet {
   private _ssr: boolean = false;
@@ -26,7 +29,8 @@ class SonnetClient extends Sonnet {
         }
       }
     }
-    this._component.loadScripts();
+    event.emit('script');
+    event.off('script');
   }
 }
 

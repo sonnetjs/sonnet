@@ -1,4 +1,4 @@
-import { $component, SonnetComponent } from '@sonnetjs/core';
+import { SonnetComponent } from '@sonnetjs/core';
 import { a, button, div, h1, img, p } from '@sonnetjs/html';
 
 class Counter extends SonnetComponent {
@@ -49,4 +49,4 @@ class Counter extends SonnetComponent {
   }
 }
 
-export default $component(Counter);
+export default Counter;

@@ -1,18 +1,8 @@
-export default abstract class SonnetComponent {
+export default class SonnetComponent {
   protected _id: string = '';
   protected _index: number = 0;
 
-  public components: SonnetComponent[] = [];
-
   constructor() {}
-
-  public loadScripts() {
-    this.script();
-
-    this.components.forEach((component) => {
-      component.loadScripts();
-    });
-  }
 
   public id(id: string) {
     this._id = id;
@@ -23,6 +13,8 @@ export default abstract class SonnetComponent {
     this._index = index;
     return this;
   }
+
+  public static script() {}
 
   public script() {}
 
