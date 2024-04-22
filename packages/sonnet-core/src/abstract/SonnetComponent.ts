@@ -18,7 +18,7 @@ export default class SonnetComponent {
 
   public script() {}
 
-  public get(): string | Element {
+  public get(): string | Element | Promise<string | Element> {
     return '';
   }
 }
