@@ -17,11 +17,11 @@ class SonnetClient extends Sonnet {
     return this;
   }
 
-  mount(selector: string) {
+  async mount(selector: string) {
     if (!this._ssr && isBrowser()) {
       const el = document.querySelector(selector);
       if (el) {
-        const component = this._component.get();
+        const component = await this._component.get();
         if (typeof component === 'string') {
           el.innerHTML = component as string;
         } else if (component instanceof Element) {
