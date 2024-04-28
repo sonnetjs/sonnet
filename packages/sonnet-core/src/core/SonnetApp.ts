@@ -1,26 +1,29 @@
 import { isBrowser } from '@sonnetjs/shared';
-import SonnetComponent from '../abstract/SonnetComponent';
-import { Sonnet } from './Sonnet';
+
 import { EventEmitter } from './Event';
+import SonnetComponent from '../abstract/SonnetComponent';
 
 const event = EventEmitter.getInstance();
 
-class SonnetClient extends Sonnet {
+class SonnetApp {
   private _ssr: boolean = false;
+  private _component?: SonnetComponent;
 
-  constructor(component: SonnetComponent) {
-    super(component);
-  }
+  constructor() {}
 
   ssr(value: boolean = true) {
     this._ssr = value;
     return this;
   }
 
+  root(component: SonnetComponent) {
+    this._component = component;
+  }
+
   async mount(selector: string) {
     if (!this._ssr && isBrowser()) {
       const el = document.querySelector(selector);
-      if (el) {
+      if (el && this._component) {
         const component = await this._component.get();
         if (typeof component === 'string') {
           el.innerHTML = component as string;
@@ -34,6 +37,6 @@ class SonnetClient extends Sonnet {
   }
 }
 
-export function createApp(component: SonnetComponent) {
-  return new SonnetClient(component);
+export function createApp() {
+  return new SonnetApp();
 }

@@ -1,8 +1,7 @@
 ---
-"@sonnetjs/dom": minor
-"@sonnetjs/html": minor
-"@sonnetjs/shared": minor
-"@sonnetjs/store": minor
+'@sonnetjs/dom': minor
+'@sonnetjs/shared': minor
+'@sonnetjs/store': minor
 ---
 
 summary
