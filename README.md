@@ -31,9 +31,6 @@ npm run dev
 ## Apps and Packages
 
 - `@sonnet/core`: The core package that provides the foundation for building web applications.
-- `@sonnet/html`: A library to enhance html dom support inside sonnet.
-- `@sonnet/svg`: A library to enhance svg support inside sonnet.
-- `@sonnet/mathml`: A library to enhance mathml support inside sonnet.
 
 ## NPM
 
@@ -46,9 +43,3 @@ npm i @sonnetjs/core
 ## NPM Links
 
 [https://npmjs.com/package/@sonnetjs/core](https://npmjs.com/package/@sonnetjs/core)
-
-[https://npmjs.com/package/@sonnetjs/html](https://npmjs.com/package/@sonnetjs/html)
-
-[https://npmjs.com/package/@sonnetjs/svg](https://npmjs.com/package/@sonnetjs/svg)
-
-[https://npmjs.com/package/@sonnetjs/mathml](https://npmjs.com/package/@sonnetjs/mathml)
