@@ -12,6 +12,8 @@ export class SonnetApp {
   private _props?: any;
   private _plugins: { install: (app: SonnetApp) => void }[] = [];
   private _isLazy: boolean = false;
+  private _isMounted: boolean = false;
+  private _isInitialized: boolean = false;
   private _mountedId: string = '';
 
   constructor() {}
@@ -26,6 +28,14 @@ export class SonnetApp {
 
   get mountedId() {
     return this._mountedId;
+  }
+
+  get isMounted() {
+    return this._isMounted;
+  }
+
+  get isInitialized() {
+    return this._isInitialized;
   }
 
   lazy(value: boolean = true) {
@@ -88,6 +98,8 @@ export class SonnetApp {
     event.emit('script');
     event.off('script');
 
+    this._isMounted = true;
+
     return this;
   }
 
@@ -107,6 +119,7 @@ export class SonnetApp {
       plugin.install(this);
     });
     event.emit('initialized');
+    this._isInitialized = true;
     return this;
   }
 }
