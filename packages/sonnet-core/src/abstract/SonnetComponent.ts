@@ -13,6 +13,28 @@ export default class SonnetComponent {
 
   constructor() {}
 
+  hashIdCache: string | undefined = undefined;
+  get hashId() {
+    if (this.hashIdCache) {
+      return this.hashIdCache;
+    }
+    const array = new Uint32Array(1);
+    window.crypto.getRandomValues(array);
+    const hash = array[0].toString().substring(0, 8);
+    this.hashIdCache = hash;
+    return hash;
+  }
+
+  parentCache: HTMLElement | undefined = undefined;
+  get parent() {
+    if (this.parentCache) {
+      return this.parentCache;
+    }
+    const parent = document.getElementById(this.hashId) as HTMLElement;
+    this.parentCache = parent;
+    return parent;
+  }
+
   id(id: string) {
     this._id = id;
     return this;
