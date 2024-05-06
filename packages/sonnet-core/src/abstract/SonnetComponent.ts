@@ -1,10 +1,10 @@
+import { SonnetGet } from '@sonnetjs/shared';
+
 export interface SonnetComponentProps {
   _id: string;
   _index: number;
   _children: SonnetComponent[];
 }
-
-export type SonnetGet = string | Element | Promise<string | Element>;
 
 export default class SonnetComponent {
   protected _id: string = '';
