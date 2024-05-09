@@ -79,17 +79,19 @@ export class SonnetApp {
       this._mountedId = selector;
       return;
     }
-    if (!this._ssr && isBrowser()) {
+    if (isBrowser()) {
       const el = document.querySelector(selector);
       if (el && this._component) {
         const component = this.initRootComponent();
 
-        const getComponent = await component?.get();
+        if (!this._ssr) {
+          const getComponent = await component?.get();
 
-        if (typeof getComponent === 'string') {
-          el.innerHTML = getComponent as string;
-        } else if (getComponent instanceof Element) {
-          el.appendChild(getComponent);
+          if (typeof getComponent === 'string') {
+            el.innerHTML = getComponent as string;
+          } else if (getComponent instanceof Element) {
+            el.appendChild(getComponent);
+          }
         }
       }
     }
