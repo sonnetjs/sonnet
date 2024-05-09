@@ -1,6 +1,7 @@
 {
   "private": true,
   "scripts": {
+    "dev:sonnet-function": "turbo run dev --filter=sonnet-function",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
@@ -19,7 +20,7 @@
   },
   "packageManager": "npm@10.2.4",
   "workspaces": [
-    "apps/*",
+    "playgrounds/*",
     "packages/*",
     "tooling/*"
   ]

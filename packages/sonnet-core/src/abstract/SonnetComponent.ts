@@ -50,6 +50,11 @@ export default class SonnetComponent {
     return this;
   }
 
+  callback(cb: (component: SonnetComponent) => void) {
+    cb(this);
+    return this;
+  }
+
   public static script() {}
 
   public script() {}
