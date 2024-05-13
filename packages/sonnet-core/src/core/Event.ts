@@ -13,14 +13,20 @@ export class EventEmitter {
     return EventEmitter.instance;
   }
 
-  on(eventName: string, listener: (...args: unknown[]) => void) {
+  on<T>(
+    eventName: string,
+    listener: (...args: unknown[]) => T extends void ? void : T,
+  ) {
     if (!this.events[eventName]) {
       this.events[eventName] = [];
     }
     this.events[eventName].push(listener);
   }
 
-  once(eventName: string, listener: (...args: unknown[]) => void) {
+  once<T>(
+    eventName: string,
+    listener: (...args: unknown[]) => T extends void ? void : T,
+  ) {
     if (!this.events[eventName]) {
       this.events[eventName] = [];
     }
@@ -29,7 +35,10 @@ export class EventEmitter {
     }
   }
 
-  off(eventName: string, listener?: (...args: unknown[]) => void) {
+  off<T>(
+    eventName: string,
+    listener?: (...args: unknown[]) => T extends void ? void : T,
+  ) {
     const listeners = this.events[eventName];
     if (listeners && !listener) {
       delete this.events[eventName];
@@ -38,10 +47,10 @@ export class EventEmitter {
     }
   }
 
-  emit(eventName: string, ...args: unknown[]) {
+  emit<T>(eventName: string, ...args: unknown[]): T[] | void {
     const listeners = this.events[eventName];
     if (listeners) {
-      listeners.forEach((listener) => listener(...args));
+      return listeners.map((listener) => listener(...args) as T);
     }
   }
 

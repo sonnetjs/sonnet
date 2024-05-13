@@ -1,4 +1,4 @@
-import { SonnetGet } from '@sonnetjs/shared';
+import { SonnetGet, SonnetHead } from '@sonnetjs/shared';
 
 export interface SonnetComponentProps {
   _id: string;
@@ -63,11 +63,19 @@ export default abstract class SonnetComponent {
     return this;
   }
 
-  public static script() {}
+  static head(): SonnetHead {
+    return '';
+  }
 
-  public script() {}
+  head(): SonnetHead {
+    return '';
+  }
 
-  public get(): SonnetGet {
+  static script() {}
+
+  script() {}
+
+  get(): SonnetGet {
     return '';
   }
 }

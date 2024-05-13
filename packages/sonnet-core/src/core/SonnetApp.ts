@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { isBrowser } from '@sonnetjs/shared';
+import { SonnetHead, isBrowser } from '@sonnetjs/shared';
 
 import { EventEmitter } from './Event';
 import SonnetComponent from '../abstract/SonnetComponent';
@@ -93,6 +93,16 @@ export class SonnetApp {
             el.appendChild(getComponent);
           }
         }
+
+        const heads = event.emit<SonnetHead>('head');
+
+        heads?.forEach((head) => {
+          if (typeof head === 'string') {
+            document.head.innerHTML += head;
+          } else if (head instanceof Element) {
+            document.head.appendChild(head);
+          }
+        });
 
         event.emit('script');
         event.off('script');
