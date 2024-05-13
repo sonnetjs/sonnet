@@ -93,12 +93,12 @@ export class SonnetApp {
             el.appendChild(getComponent);
           }
         }
+
+        event.emit('script');
+        event.off('script');
       }
     }
     event.emit('mount');
-
-    event.emit('script');
-    event.off('script');
 
     this._isMounted = true;
 
