@@ -4,7 +4,7 @@ class RootComponent extends SonnetComponent {
   public get() {
     return /*html*/ `
     <div>
-      ${this.children()}
+      ${this._children}
       this is new thing
     </div>
     `;

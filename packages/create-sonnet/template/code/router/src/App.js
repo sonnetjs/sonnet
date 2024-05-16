@@ -10,7 +10,7 @@ class App extends SonnetComponent {
     return /*html */ `
     ${Header()}
     <div id="app-1">
-      ${this.children_}
+      ${this._children}
     </div
     `;
   }

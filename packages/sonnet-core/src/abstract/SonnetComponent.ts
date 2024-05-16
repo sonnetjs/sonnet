@@ -9,29 +9,20 @@ export interface SonnetComponentProps {
 export default abstract class SonnetComponent {
   constructor() {}
 
-  private _id: string = '';
-  id(id?: string) {
-    if (id === undefined) {
-      return this._id;
-    }
+  protected _id: string = '';
+  id(id: string) {
     this._id = id;
     return this;
   }
 
-  private _index: number = 0;
-  index(index?: number) {
-    if (index === undefined) {
-      return this._index;
-    }
+  protected _index: number = 0;
+  index(index: number) {
     this._index = index;
     return this;
   }
 
-  private _children: SonnetGet = '';
-  children(children?: SonnetGet) {
-    if (children === undefined) {
-      return this._children;
-    }
+  protected _children: SonnetGet = '';
+  children(children: SonnetGet) {
     this._children = children;
     return this;
   }
