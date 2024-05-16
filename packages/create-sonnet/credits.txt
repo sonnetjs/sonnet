@@ -1,0 +1,8 @@
+=================================================================
+Credits:
+=================================================================
+
+- The original author of this mod is [Haoqun Jiang](https://github.com/sodatea)
+- The code is extracted from the [original repository](https://github.com/vuejs/create-vue)
+- All the credits go to the original author and contributors of the original repository
+- The original code is licensed under the [MIT License](https://github.com/vuejs/create-vue/blob/main/LICENSE)
