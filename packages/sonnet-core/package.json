@@ -39,7 +39,7 @@
   "bugs": {
     "url": "https://github.com/sonnetjs/sonnet/issues"
   },
-  "homepage": "https://github.com/sonnetjs/sonnet/tree/main/packages/sonnet-core#readme",
+  "homepage": "sonnetjs.github.io",
   "tags": [
     "sonnet",
     "web-components",
