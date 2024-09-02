@@ -77,7 +77,7 @@ export class SonnetApp {
   async mount(selector: string) {
     if (this._isLazy) {
       this._mountedId = selector;
-      return;
+      return this;
     }
     if (isBrowser()) {
       const el = document.querySelector(selector);
@@ -116,7 +116,6 @@ export class SonnetApp {
   }
 
   unmount() {
-    event.off('script');
     event.emit('unmount');
     return this;
   }
