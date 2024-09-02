@@ -120,9 +120,32 @@ export class SonnetApp {
     return this;
   }
 
-  on(event: string, callback: () => void) {
-    EventEmitter.getInstance().on(event, callback);
+  on<T>(
+    eventName: string,
+    listener: (...args: unknown[]) => T extends void ? void : T,
+  ) {
+    EventEmitter.getInstance().on(eventName, listener);
     return this;
+  }
+
+  once<T>(
+    eventName: string,
+    listener: (...args: unknown[]) => T extends void ? void : T,
+  ) {
+    EventEmitter.getInstance().once(eventName, listener);
+    return this;
+  }
+
+  off<T>(
+    eventName: string,
+    listener?: (...args: unknown[]) => T extends void ? void : T,
+  ) {
+    EventEmitter.getInstance().off(eventName, listener);
+    return this;
+  }
+
+  emit<T>(eventName: string, ...args: unknown[]): T[] | void {
+    return EventEmitter.getInstance().emit(eventName, args);
   }
 
   initialized() {
