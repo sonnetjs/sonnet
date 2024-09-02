@@ -49,6 +49,27 @@ export default abstract class SonnetComponent {
     return parent;
   }
 
+  rerender(querySelector: string) {
+    const element = document.querySelector(querySelector);
+
+    if (element) {
+      const html = this.get();
+
+      const template = document.createElement('template');
+      if (typeof html === 'string') {
+        template.innerHTML = html;
+      } else {
+        template.appendChild(html);
+      }
+
+      const updatedElement = template.content.querySelector(querySelector);
+
+      if (updatedElement) {
+        element.replaceWith(updatedElement);
+      }
+    }
+  }
+
   callback(cb: (component: SonnetComponent) => void) {
     cb(this);
     return this;

@@ -74,7 +74,7 @@ export class SonnetApp {
     return component;
   }
 
-  async mount(selector: string) {
+  mount(selector: string) {
     if (this._isLazy) {
       this._mountedId = selector;
       return this;
@@ -85,7 +85,7 @@ export class SonnetApp {
         const component = this.initRootComponent();
 
         if (!this._ssr) {
-          const getComponent = await component?.get();
+          const getComponent = component?.get();
 
           if (typeof getComponent === 'string') {
             el.innerHTML = getComponent as string;
