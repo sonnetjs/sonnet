@@ -1,0 +1,59 @@
+{
+  "name": "@sonnetjs/router",
+  "version": "0.0.5",
+  "files": [
+    "dist"
+  ],
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.mts"
+    }
+  },
+  "author": "htmujahid",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint \"**/*.ts\""
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "eslint": "^8.57.0",
+    "tsup": "^8.0.2",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "@sonnetjs/core": "0.0.32"
+  },
+  "dependencies": {
+    "path-to-regexp": "^8.2.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sonnetjs/router.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sonnetjs/router/issues"
+  },
+  "homepage": "https://github.com/sonnetjs/router/tree/main/packages/sonnet-router#readme",
+  "tags": [
+    "sonnet",
+    "web-components",
+    "web"
+  ],
+  "keywords": [
+    "sonnetjs",
+    "sonnet",
+    "web-components",
+    "components",
+    "web",
+    "frontend"
+  ]
+}
