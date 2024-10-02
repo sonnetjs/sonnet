@@ -27,7 +27,7 @@
     "typescript": "^5.3.3"
   },
   "peerDependencies": {
-    "@sonnetjs/core": "0.0.32"
+    "@sonnetjs/core": "0.0.33"
   },
   "dependencies": {
     "path-to-regexp": "^8.2.0"

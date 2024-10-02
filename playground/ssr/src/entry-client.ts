@@ -1,8 +1,9 @@
 import './style.css';
 import { createApp } from '@sonnetjs/core';
-import Counter from './Counter';
+
+import App from './App';
 
 const app = createApp();
-app.root(Counter);
+app.root(App);
 app.ssr();
 app.mount('#app');

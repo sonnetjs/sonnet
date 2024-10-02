@@ -3,7 +3,7 @@ import express from 'express';
 
 // Constants
 const isProduction = process.env.NODE_ENV === 'production';
-const port = process.env.PORT || 5174;
+const port = process.env.PORT || 3000;
 const base = process.env.BASE || '/';
 
 // Cached production assets
@@ -63,10 +63,6 @@ app.use('*', async (req, res) => {
     console.log(e.stack);
     res.status(500).end(e.stack);
   }
-});
-
-app.get('/', (req, res) => {
-  res.redirect(301, '/home');
 });
 
 // Start http server

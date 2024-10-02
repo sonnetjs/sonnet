@@ -65,10 +65,6 @@ app.use('*', async (req, res) => {
   }
 });
 
-app.get('/', (req, res) => {
-  res.redirect(301, '/home');
-});
-
 // Start http server
 app.listen(port, () => {
   console.log(`Server started at http://localhost:${port}`);

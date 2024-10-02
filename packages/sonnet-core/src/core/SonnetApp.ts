@@ -84,9 +84,9 @@ export class SonnetApp {
       if (el && this._component) {
         const component = this.initRootComponent();
 
-        if (!this._ssr) {
-          const getComponent = component?.get();
+        const getComponent = component?.get();
 
+        if (!this._ssr) {
           if (typeof getComponent === 'string') {
             el.innerHTML = getComponent as string;
           } else if (getComponent instanceof Element) {

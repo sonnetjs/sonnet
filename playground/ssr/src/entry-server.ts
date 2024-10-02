@@ -1,6 +1,6 @@
-import Counter from './Counter';
+import App from './App';
 
 export async function render() {
-  const html = await Counter().get();
+  const html = await App().get();
   return { html };
 }
