@@ -10,6 +10,6 @@
   },
   "dependencies": {
     "@sonnetjs/core": "0.0.33",
-    "@sonnetjs/router": "0.0.5"
+    "@sonnetjs/router": "0.0.7"
   }
 }

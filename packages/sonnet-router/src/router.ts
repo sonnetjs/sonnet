@@ -44,70 +44,99 @@ export class Router {
     return this.options.routes;
   }
 
+  async hyderate(component: ((args?: any) => SonnetComponent) | undefined) {
+    const match = this.state.match;
+
+    if (!match) return {
+      root: undefined,
+      children: undefined,
+    };
+
+    const rootComponent = match.data?.ancestors
+      .reverse()
+      .find((match) => match.layout)?.layout;
+      
+    if (match.data?.component) {
+      const matchingComponent = await match.data.component();
+
+      if (component && !this.isFirstMounted) {
+        this.isAppRoot = true;
+      }
+      if (!this.isAppRoot && this.options.mountedId) {
+        console.warn(
+          "Mounted id doesn't have any impact because the app root is not set.",
+          'set app.root(App) in your app component.',
+        );
+      }
+
+      if (component && this.isAppRoot) {
+        if (this.options.mountedId && this.isFirstMounted) {
+          if (rootComponent) {
+            const initRoot = await rootComponent();
+            return {
+              root: () => initRoot,
+              children: matchingComponent.get(),
+            };
+          } else {
+            return {
+              root: () => matchingComponent,
+              children: undefined,
+            };
+          }
+        } else {
+          if (rootComponent) {
+            const initRoot = (await rootComponent())
+              .children(matchingComponent.get())
+              .get();
+            return {
+              root: component,
+              children: initRoot,
+            };
+          } else {
+            return {
+              root: component,
+              children: matchingComponent.get(),
+            };
+          }
+        }
+      } else {
+        this.isAppRoot = false;
+        if (rootComponent) {
+          const initRoot = await rootComponent();
+          return {
+            root: () => initRoot,
+            children: matchingComponent.get(),
+          };
+        } else {
+          return {
+            root: () => matchingComponent,
+            children: undefined,
+          };
+        }
+      }
+    } else {
+      return {
+        root: undefined,
+        children: undefined,
+      };
+    }
+  }
+
   install(app: SonnetApp): void {
     if (this.state.initialized) return;
     app.lazy(false);
 
     this.unsubscribe = this.subscribe(async () => {
       if (!app) return;
-      const match = this.state.match;
 
-      if (!match) return;
+      const {root, children } = await this.hyderate(app.component);
 
-      const lastMatch = match;
-      const rootComponent = lastMatch.data?.ancestors
-        .reverse()
-        .find((match) => match.layout)?.layout;
-
-      if (lastMatch.data?.component) {
-        const matchingComponent = await lastMatch.data.component();
-
-        if (app.component && !this.isFirstMounted) {
-          this.isAppRoot = true;
-        }
-        if (!this.isAppRoot && this.options.mountedId) {
-          console.warn(
-            "Mounted id doesn't have any impact because the app root is not set.",
-            'set app.root(App) in your app component.',
-          );
-        }
-
-        if (app.component && this.isAppRoot) {
-          if (this.options.mountedId && this.isFirstMounted) {
-            if (rootComponent) {
-              const initRoot = await rootComponent();
-              app.root(() => initRoot, {
-                _children: matchingComponent.get(),
-              });
-            } else {
-              app.root(() => matchingComponent);
-            }
-          } else {
-            if (rootComponent) {
-              const initRoot = (await rootComponent())
-                .children(matchingComponent.get())
-                .get();
-              app.root(app.component, {
-                _children: initRoot,
-              });
-            } else {
-              app.root(app.component, {
-                _children: matchingComponent.get(),
-              });
-            }
-          }
-        } else {
-          this.isAppRoot = false;
-          if (rootComponent) {
-            const initRoot = await rootComponent();
-            app.root(() => initRoot, {
-              _children: matchingComponent.get(),
-            });
-          } else {
-            app.root(() => matchingComponent);
-          }
-        }
+      if (root) {
+        app.root(root, {
+          _children: children,
+        });
       }
+
       if (this.options.mountedId && this.isFirstMounted && this.isAppRoot) {
         app.unmount();
         app.mount(this.options.mountedId);

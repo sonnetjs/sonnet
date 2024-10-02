@@ -197,10 +197,17 @@ async function init() {
           message: 'Select a template',
           choices: [
             { title: 'Default', value: 'default' },
-            { title: 'Router', value: 'router' },
             { title: 'SSR', value: 'ssr' },
           ],
           initial: 0,
+        },
+        {
+          name: 'needsRouter',
+          type: () => (isFeatureFlagsUsed ? null : 'toggle'),
+          message: language.needsRouter.message,
+          initial: false,
+          active: language.defaultToggleOptions.active,
+          inactive: language.defaultToggleOptions.inactive
         },
         {
           name: 'needsTypeScript',
@@ -256,10 +263,27 @@ async function init() {
   render('base')
 
   // Render code template.
-  // prettier-ignore
-  const codeTemplate =
-    (result.selectTemplate) +
-    (needsTypeScript ? '-ts' : '')
+  let codeTemplate = '';
+  switch (result.selectTemplate) {
+    case 'ssr':
+      codeTemplate = 'ssr';
+      break;
+    case 'default':
+      codeTemplate = 'default';
+      break;
+    default:
+      codeTemplate = 'default'
+      break;
+  }
+
+  if (result.needsRouter) {
+    codeTemplate += 'router';
+  }
+
+  if (needsTypeScript) {
+    codeTemplate += '-ts';
+  }
+
   render(`code/${codeTemplate}`)
 
   // An external data store for callbacks to share data

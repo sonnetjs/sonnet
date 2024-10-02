@@ -23,7 +23,9 @@ export class RouterComponent {
   }
 
   path(path: string) {
-    this._path = path.replace(/\/$/, '');
+    this._path = path;
+    if (this._path === '') this._path = '/';
+    console.log('path', this._path);
     return this;
   }
 
@@ -64,11 +66,15 @@ export class RouterComponent {
       const completePath = prevPath + child._path;
       const currentAncestors = [...ancestors, this];
 
+      if (!path.startsWith('/')) {
+        path = '/' + path;
+      }
+
       if (match(completePath, { decode: decodeURIComponent })(path) && child._component) {
         child._path = path;
         child._ancestors = currentAncestors;
         return child;
-      } else if (match(completePath + '(.*)', { decode: decodeURIComponent })(path)) {
+      } else if (match(completePath + '{}', {decode: decodeURIComponent})(path)) {
         const nestedResult = child.match(path, completePath, currentAncestors);
         
         if (nestedResult) {

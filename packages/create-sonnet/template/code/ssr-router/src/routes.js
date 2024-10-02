@@ -1,4 +1,4 @@
-import { router, createBrowserHistory, createRouter } from '@sonnetjs/router';
+import { router, createMemoryHistory, createRouter } from '@sonnetjs/router';
 
 export const routes = router().layout(
   async () => (await import('./partials/Layout')).default()
@@ -8,6 +8,6 @@ export const routes = router().layout(
   router().path('/contact/1/1').component(async () => (await import('./pages/Contact')).default()).get(),
 ]).get()
 
-const history = createBrowserHistory();
+const history = createMemoryHistory();
 
 export const routers = createRouter().routes(routes).history(history).mountedId('#app-1').get();
