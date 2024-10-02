@@ -122,6 +122,9 @@ async function init() {
       "message": "Package name:",
       "invalidMessage": "Invalid package.json name"
     },
+    "needsRouter": {
+      "message": "Install Sonnet Router?"
+    },
     "needsTypeScript": {
       "message": "Add TypeScript?"
     },
