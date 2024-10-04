@@ -280,7 +280,7 @@ async function init() {
   }
 
   if (result.needsRouter) {
-    codeTemplate += 'router';
+    codeTemplate += '-router';
   }
 
   if (needsTypeScript) {
