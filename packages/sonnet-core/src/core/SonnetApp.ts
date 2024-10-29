@@ -16,8 +16,6 @@ export class SonnetApp {
   private _isInitialized: boolean = false;
   private _mountedId: string = '';
 
-  constructor() {}
-
   get component() {
     return this._component;
   }

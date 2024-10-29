@@ -7,8 +7,6 @@ export interface SonnetComponentProps {
 }
 
 export default abstract class SonnetComponent {
-  constructor() {}
-
   protected _id: string = '';
   id(id: string) {
     this._id = id;
@@ -27,26 +25,14 @@ export default abstract class SonnetComponent {
     return this;
   }
 
-  private _hashIdCache: string | undefined = undefined;
+  private _hashIdCache?: string;
   get hashId() {
-    if (this._hashIdCache) {
-      return this._hashIdCache;
-    }
-    const array = new Uint32Array(1);
-    window.crypto.getRandomValues(array);
-    const hash = array[0].toString().substring(0, 8);
-    this._hashIdCache = hash;
-    return hash;
+    return this._hashIdCache ??= window.crypto.getRandomValues(new Uint32Array(1))[0].toString().substring(0, 8);
   }
 
-  private _parentCache: HTMLElement | undefined = undefined;
+  private _parentCache?: HTMLElement;
   get parent() {
-    if (this._parentCache) {
-      return this._parentCache;
-    }
-    const parent = document.getElementById(this.hashId) as HTMLElement;
-    this._parentCache = parent;
-    return parent;
+    return this._parentCache ??= document.getElementById(this.hashId) as HTMLElement;
   }
 
   rerender(querySelector: string) {
