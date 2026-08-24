@@ -1,7 +1,7 @@
 # SonnetJS
 
 You don't always need node_modules, bundlers, a compiler, transpilers,
-a virtual DOM, hydration, config files, or a dev server.
+a virtual DOM, hydration, reactivity, config files, or a dev server.
 
 A zero-dependency, zero-build component boilerplate in vanilla JavaScript.
 Classic scripts only — no bundler, no `npm install`, works when `index.html`

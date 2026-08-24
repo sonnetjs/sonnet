@@ -57,6 +57,7 @@ class App extends Component {
                 'transpilers',
                 'a virtual DOM',
                 'hydration',
+                'reactivity',
                 'config files',
                 'a dev server',
             ],
