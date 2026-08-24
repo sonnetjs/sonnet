@@ -1,0 +1,298 @@
+/* ---------- Design tokens ---------- */
+
+:root {
+    --color-bg: #fafafa;
+    --color-surface: #ffffff;
+    --color-border: #e4e4e4;
+    --color-text: #171717;
+    --color-text-muted: #666666;
+    --color-accent: #4f46e5;
+    --color-accent-soft: rgba(79, 70, 229, 0.08);
+    --syntax-keyword: #7c3aed;
+    --syntax-string: #15803d;
+    --syntax-fn: #b45309;
+    --font-mono: ui-monospace, "Cascadia Code", "JetBrains Mono", Menlo, monospace;
+    --radius: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-bg: #111111;
+        --color-surface: #181818;
+        --color-border: #2a2a2a;
+        --color-text: #ededed;
+        --color-text-muted: #a0a0a0;
+        --color-accent: #818cf8;
+        --color-accent-soft: rgba(129, 140, 248, 0.12);
+        --syntax-keyword: #a78bfa;
+        --syntax-string: #4ade80;
+        --syntax-fn: #fbbf24;
+    }
+}
+
+/* ---------- Base ---------- */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.6;
+    color: var(--color-text);
+    background: var(--color-bg);
+    -webkit-font-smoothing: antialiased;
+}
+
+code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    padding: 0.15em 0.4em;
+    border-radius: 5px;
+    color: var(--color-accent);
+    background: var(--color-accent-soft);
+}
+
+/* ---------- Layout ---------- */
+
+.app {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    padding: 3.5rem 0 4rem;
+}
+
+/* ---------- Header ---------- */
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.brand {
+    font-weight: 650;
+    letter-spacing: -0.01em;
+}
+
+.badge {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 0.15em 0.55em;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text-muted);
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: center;
+}
+
+.title {
+    margin: 0;
+    font-size: clamp(2.25rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--color-accent);
+}
+
+.tagline {
+    margin: 0;
+    font-size: 1.125rem;
+    color: var(--color-text-muted);
+    max-width: 34rem;
+}
+
+/* ---------- Word cycle ---------- */
+
+.word-cycle {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.95em;
+    font-weight: 500;
+    padding: 0.1em 0.45em;
+    border-radius: 5px;
+    color: var(--color-accent);
+    background: var(--color-accent-soft);
+    animation: word-in 0.25s ease;
+}
+
+/* Entrance: rises in from below */
+@keyframes word-in {
+    from {
+        opacity: 0;
+        transform: translateY(0.5em);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Exit: added by WordCycle before each swap; duration must match
+   WordCycle.EXIT_MS in src/components/word-cycle.js */
+.word-cycle.word-out {
+    animation: word-out 0.2s ease forwards;
+}
+
+@keyframes word-out {
+    to {
+        opacity: 0;
+        transform: translateY(-0.5em);
+    }
+}
+
+/* ---------- Cards ---------- */
+
+.card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+}
+
+/* ---------- Live example ---------- */
+
+.example {
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.example-preview {
+    display: flex;
+    justify-content: center;
+    padding: 2.5rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.example .code-block {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+}
+
+.how .hint {
+    text-align: center;
+}
+
+.example-preview button {
+    font: inherit;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    padding: 0.6em 1.4em;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-bg);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+}
+
+.example-preview button:hover {
+    border-color: var(--color-accent);
+}
+
+.example-preview button:active {
+    background: var(--color-accent-soft);
+}
+
+.hint {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+/* ---------- How it works ---------- */
+
+.how {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.code-block {
+    margin: 0.5rem 0 0;
+    padding: 1.25rem 1.5rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow-x: auto;
+}
+
+.code-block code {
+    display: block;
+    padding: 0;
+    background: none;
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.7;
+}
+
+.tok-kw {
+    color: var(--syntax-keyword);
+}
+
+.tok-str {
+    color: var(--syntax-string);
+}
+
+.tok-fn {
+    color: var(--syntax-fn);
+}
+
+.tok-cls {
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+    padding: 1.25rem 0;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    text-align: center;
+}
+
+.footer p {
+    margin: 0;
+}
+
+/* ---------- Accessibility ---------- */
+
+:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
