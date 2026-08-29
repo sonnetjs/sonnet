@@ -1,35 +1,25 @@
 /**
- * Per-class cache of parsed `<template>` elements, keyed by component class.
- * @type {WeakMap<Function, HTMLTemplateElement>}
- */
-const templateCache = new WeakMap()
-
-/**
- * Base class for template-driven components.
- *
- * Subclasses define a static {@link Component.template} HTML string and
- * optionally override {@link Component#script} to attach behavior to the
- * rendered DOM. Components hold immutable {@link Component#props} passed at
- * construction and mutable {@link Component#state}; calling
- * {@link Component#setState} re-renders the component in place.
- *
- * @template [P=Object] Type of the props object accepted by the constructor.
- * @template [S=Object] Type of the component's mutable state.
+ * Base class for template-driven components. A component is nothing more
+ * than a static {@link Component.template} HTML string and a
+ * {@link Component#script} method that wires up behavior on the cloned
+ * template content — reading whatever fields the subclass's own constructor
+ * stored on it, querying the DOM, and attaching event listeners directly,
+ * exactly as you'd do with no framework at all. Inserting a component into
+ * the page is a separate concern, handled by the standalone {@link mount}
+ * function, not by the class itself.
  *
  * @example
- * /** @extends {Component<{label?: string}, {on: boolean}>} *\/
  * class Toggle extends Component {
  *     static template = '<button type="button"></button>'
  *
- *     constructor(props = {}) {
- *         super(props)
- *         this.state = { on: false }
- *     }
- *
  *     script(root) {
+ *         let on = false
  *         const btn = $(root, 'button')
- *         btn.textContent = `${this.props.label ?? 'Toggle'}: ${this.state.on ? 'on' : 'off'}`
- *         btn.addEventListener('click', () => this.setState({ on: !this.state.on }))
+ *         btn.textContent = 'Toggle: off'
+ *         btn.addEventListener('click', () => {
+ *             on = !on
+ *             btn.textContent = `Toggle: ${on ? 'on' : 'off'}`
+ *         })
  *     }
  * }
  */
@@ -43,185 +33,69 @@ class Component {
     static template = ''
 
     /**
-     * Data passed to the component at construction. Treat as read-only;
-     * use {@link Component#state} for values that change.
-     * @type {P}
+     * Cache slot for {@link Component.templateElement}, declared here only
+     * so `Component` itself has one (value `undefined`). Subclasses never
+     * redeclare it — when the getter below assigns `this._templateElement`,
+     * `this` is the subclass being accessed, so that assignment creates a
+     * separate *own* property on that subclass, shadowing this one. Every
+     * subclass ends up with its own cache slot despite sharing this one
+     * inherited getter — no external map needed to keep them apart.
+     * @type {HTMLTemplateElement | undefined}
      */
-    props
-
-    /**
-     * The component's mutable state. Change it with
-     * {@link Component#setState} so the component re-renders.
-     * @type {S}
-     */
-    state = /** @type {S} */ ({})
-
-    /**
-     * Live top-level DOM nodes while mounted; empty when not mounted.
-     * @type {ChildNode[]}
-     */
-    #nodes = []
-
-    /**
-     * @param {P} [props] - Data made available to the component as
-     *     `this.props`.
-     */
-    constructor(props = /** @type {P} */ ({})) {
-        this.props = props
-    }
-
-    /**
-     * Hook for attaching behavior (text content, event listeners, child
-     * components) to the rendered DOM. Called on every render with the
-     * cloned template content before it is inserted. Default is a no-op.
-     *
-     * @param {DocumentFragment} root - The cloned template content.
-     * @returns {void}
-     */
-    script(root) { }
-
-    /**
-     * Lifecycle hook: called once after the component is inserted into its
-     * host element. Default is a no-op.
-     * @returns {void}
-     */
-    onMount() { }
-
-    /**
-     * Lifecycle hook: called just before {@link Component#destroy} removes
-     * the component from the DOM. Default is a no-op.
-     * @returns {void}
-     */
-    onDestroy() { }
-
-    /**
-     * Whether the component is currently in the DOM.
-     * @type {boolean}
-     */
-    get isMounted() {
-        return this.#nodes.length > 0
-    }
+    static _templateElement
 
     /**
      * The parsed `<template>` element for this class, built from
-     * {@link Component.template} on first access and cached per subclass.
+     * {@link Component.template} on first access and cached on the class
+     * itself as {@link Component._templateElement}.
      *
      * @type {HTMLTemplateElement}
      * @throws {Error} If the subclass does not define a static template.
      */
     static get templateElement() {
-        let cached = templateCache.get(this)
-        if (!cached) {
+        if (!Object.hasOwn(this, '_templateElement')) {
             if (!this.template) {
                 throw new Error(`${this.name}: no static template defined`)
             }
-            cached = document.createElement('template')
-            cached.innerHTML = this.template
-            templateCache.set(this, cached)
+            const el = document.createElement('template')
+            el.innerHTML = this.template
+            this._templateElement = el
+            return el
         }
-        return cached
+        return /** @type {HTMLTemplateElement} */ (this._templateElement)
     }
 
     /**
-     * Clones the template content and runs {@link Component#script} on it.
+     * Hook for attaching behavior (text content, event listeners, child
+     * components) to the rendered DOM. Called once, with the cloned
+     * template content, before it is inserted. Default is a no-op.
      *
-     * @returns {DocumentFragment} The rendered DOM fragment, ready to be
-     *     inserted into the document.
-     */
-    render() {
-        const ctor = /** @type {typeof Component} */ (this.constructor)
-        const root = /** @type {DocumentFragment} */ (
-            ctor.templateElement.content.cloneNode(true)
-        )
-        this.script(root)
-        return root
-    }
-
-    /**
-     * Renders the component and appends it to the given host element.
-     * Prefer the standalone {@link mount} helper at call sites.
-     *
-     * @param {Element} host - The element to render the component into.
-     * @returns {void}
-     * @throws {Error} If host is not an element or the component is already
-     *     mounted.
-     */
-    mount(host) {
-        if (!(host instanceof Element)) {
-            throw new Error(`${this.constructor.name}: mount target must be a DOM element`)
-        }
-        if (this.isMounted) {
-            throw new Error(`${this.constructor.name}: already mounted`)
-        }
-        const fragment = this.render()
-        this.#nodes = [...fragment.childNodes]
-        host.appendChild(fragment)
-        this.onMount()
-    }
-
-    /**
-     * Re-renders the mounted component in place, replacing its current DOM
-     * nodes with a fresh render. Usually invoked indirectly via
-     * {@link Component#setState}.
-     *
-     * @returns {void}
-     * @throws {Error} If the component is not mounted.
-     */
-    update() {
-        if (!this.isMounted) {
-            throw new Error(`${this.constructor.name}: update() called before mount`)
-        }
-        const fragment = this.render()
-        const newNodes = [...fragment.childNodes]
-        const first = this.#nodes[0]
-        first.parentNode?.insertBefore(fragment, first)
-        for (const node of this.#nodes) {
-            node.remove()
-        }
-        this.#nodes = newNodes
-    }
-
-    /**
-     * Merges a partial state object into {@link Component#state} and
-     * re-renders if mounted.
-     *
-     * @param {Partial<S>} patch - State keys to update.
+     * @param {DocumentFragment} root - The cloned template content.
      * @returns {void}
      */
-    setState(patch) {
-        Object.assign(this.state, patch)
-        if (this.isMounted) {
-            this.update()
-        }
-    }
-
-    /**
-     * Removes the component from the DOM, calling
-     * {@link Component#onDestroy} first. Safe to call when not mounted.
-     * @returns {void}
-     */
-    destroy() {
-        if (!this.isMounted) {
-            return
-        }
-        this.onDestroy()
-        for (const node of this.#nodes) {
-            node.remove()
-        }
-        this.#nodes = []
-    }
+    script(root) { }
 }
 
 /**
- * Renders a component into the given DOM element.
+ * Clones the component's template, runs its {@link Component#script}, and
+ * appends the result to `host`.
  *
- * @template {Component<any, any>} C
- * @param {Element} root - The element to render the component into.
+ * @template {Component} C
+ * @param {Element} host - The element to render the component into.
  * @param {C} component - The component instance to mount.
- * @returns {C} The mounted component, for later `update()`/`destroy()`.
+ * @returns {C} `component`, for convenience at the call site.
+ * @throws {Error} If host is not a DOM element.
  */
-function mount(root, component) {
-    component.mount(root)
+function mount(host, component) {
+    if (!(host instanceof Element)) {
+        throw new Error('mount: target must be a DOM element')
+    }
+    const ctor = /** @type {typeof Component} */ (component.constructor)
+    const fragment = /** @type {DocumentFragment} */ (
+        ctor.templateElement.content.cloneNode(true)
+    )
+    component.script(fragment)
+    host.appendChild(fragment)
     return component
 }
 
@@ -242,4 +116,18 @@ function $(root, selector) {
         throw new Error(`$: no element found for selector "${selector}"`)
     }
     return /** @type {T} */ (el)
+}
+
+/**
+ * Queries all matching elements as a plain array — `querySelectorAll` with
+ * an array instead of a `NodeList`, so call sites can `.map`/`.filter`
+ * directly. Unlike {@link $}, an empty match is not an error.
+ *
+ * @template {Element} [T=HTMLElement]
+ * @param {ParentNode} root - Fragment or element to search within.
+ * @param {string} selector - CSS selector for the elements.
+ * @returns {T[]} The matched elements, possibly empty.
+ */
+function $$(root, selector) {
+    return /** @type {T[]} */ ([...root.querySelectorAll(selector)])
 }

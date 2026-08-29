@@ -22,11 +22,11 @@ index.html            entry page; loads scripts in dependency order
 jsconfig.json         enables type checking + autocomplete in VS Code
 src/
   styles.css          global styles (design tokens + page styles)
-  core.js             the micro-framework: Component, mount(), $()
+  core.js             the micro-framework: Component, mount(), $(), $$()
   components/         one file per component
     app.js            root App component (header, hero, live example, footer)
     counter.js        minimal Counter component (template + script hook)
-    word-cycle.js     animated word rotator (lifecycle hooks + timer)
+    word-cycle.js     animated word rotator (self-scheduling timer)
   main.js             entry point: mounts App into #app
 ```
 
@@ -35,39 +35,35 @@ Because these are classic scripts, load order in `index.html` matters:
 
 ## Core concepts
 
-**Component** — subclass `Component`, define a static `template` (static,
-trusted HTML only — dynamic values are set in `script` via `textContent`),
-and wire behavior in `script(root)`:
+**Component** — a class is nothing more than a static `template` (static,
+trusted HTML only — dynamic values are set in `script` via `textContent`)
+and a `script(root)` method:
 
 ```js
-/**
- * @typedef {Object} GreetingProps
- * @property {string} [name] - Who to greet. Defaults to "world".
- */
-
-/** @extends {Component<GreetingProps>} */
 class Greeting extends Component {
     static template = `<p data-ref="text"></p>`
 
+    /** @param {string} [name] - Who to greet. Defaults to "world". */
+    constructor(name) {
+        super()
+        this.name = name
+    }
+
     /** @param {DocumentFragment} root */
     script(root) {
-        $(root, '[data-ref="text"]').textContent = `Hello, ${this.props.name ?? 'world'}`
+        $(root, '[data-ref="text"]').textContent = `Hello, ${this.name ?? 'world'}`
     }
 }
 ```
 
-The simplest components need nothing else (see `counter.js`). Components
-with mutable state initialize it in a constructor and type it via the
-second generic parameter: `@extends {Component<Props, State>}` (see
-`word-cycle.js`).
-
-**Props vs state** — `props` are passed in at construction and treated as
-read-only. `state` is the component's own mutable data; change it with
-`setState(patch)` and the component re-renders in place (template recloned,
-`script` re-run, old DOM nodes replaced).
-
-**Lifecycle** — override `onMount()` (after insertion) and `onDestroy()`
-(before removal via `destroy()`); use them for timers, subscriptions, etc.
+That's the whole contract — `Component` itself holds no other data or
+methods. Any config a component needs (words to cycle through, a name to
+greet) is just a field the subclass's own constructor assigns to `this`;
+there's no built-in `props` object. There's also no state or re-render
+mechanism — mutable data (a counter, a cycle index) lives in a plain closure
+variable inside `script`, and updates happen by mutating the rendered DOM
+directly in event handlers or timers, exactly as you'd write it with no
+framework at all (see `counter.js`, `word-cycle.js`).
 
 **Composition** — mount children inside `script` using placeholder elements:
 
@@ -78,22 +74,24 @@ script(root) {
 }
 ```
 
-**Helpers** — `mount(element, component)` renders a component into an
-element and returns it; `$(root, selector)` is `querySelector` that throws
-if the element is missing instead of returning `null`.
+**Helpers** — `mount(element, component)` clones the component's template,
+runs its `script`, appends the result into `element`, and returns the
+component; `$(root, selector)` is `querySelector` that throws if the
+element is missing instead of returning `null`; `$$(root, selector)` is
+`querySelectorAll` that returns a plain array instead of a `NodeList`.
 
 ## Adding a component
 
 1. Create `src/components/<name>.js` with a `class <Name> extends Component`.
-2. Document its props with a `@typedef` and `@extends {Component<Props, State>}`
-   so call sites get autocomplete.
+2. If it needs config, give it a constructor that assigns fields to `this`
+   (document params with `@param` so call sites get autocomplete).
 3. Add `<script src="./src/components/<name>.js"></script>` to `index.html`
    **before** `main.js`.
 
 ## Type checking
 
 `jsconfig.json` turns on `checkJs`, so VS Code type-checks the JSDoc
-annotations and provides autocomplete (e.g. prop names in
+annotations and provides autocomplete (e.g. constructor config keys in
 `new WordCycle({ ... })`). To check from the command line:
 
 ```bash
@@ -104,11 +102,17 @@ npx -p typescript tsc -p jsconfig.json
 
 - Every top-level `class`/`function`/`const` is a global shared across all
   scripts — keep names unique.
-- Templates are parsed once per class and cached; they cannot interpolate
-  per-instance values (that's what `script` + `state` are for).
-- `setState` replaces the component's DOM wholesale. Fine at this scale;
-  if a component grows expensive, update nodes directly in event handlers
-  instead (as `counter.js` does).
+- Templates are parsed once per class and cached on the class itself; they
+  cannot interpolate per-instance values — set those in `script` via
+  `textContent` instead.
+- There's no re-render step: `script` runs once per mount, so dynamic
+  updates must mutate the DOM directly from event handlers/timers, keeping
+  any mutable data in closure variables (as `counter.js` and
+  `word-cycle.js` do).
+- There's no unmount/`destroy()` either. `mount()` only ever appends —
+  removing a component is a matter of holding onto a DOM reference (the
+  host element, or a node returned from `script`) and calling `.remove()`
+  on it yourself, same as with no framework.
 - The landing page displays `counter.js`'s source verbatim inside `App`'s
   template — when editing one, keep the other in sync. Backticks and `${`
   in that displayed snippet are escaped (`` \` ``, `\${`) because it lives

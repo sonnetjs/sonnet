@@ -1,16 +1,15 @@
 /**
- * @typedef {Object} WordCycleProps
- * @property {string[]} words - Words to cycle through, in order.
- * @property {number} [interval] - Milliseconds between words. Defaults to 2000.
- */
-
-/**
- * Cycles through a list of words on a timer, demonstrating the
- * onMount/onDestroy lifecycle hooks. Each swap first plays the `.word-out`
- * exit animation on the current node, then re-renders; the freshly inserted
- * node plays the `.word-cycle` entrance animation. The exit delay below must
- * match the `word-out` animation duration in styles.css.
- * @extends {Component<WordCycleProps, {index: number}>}
+ * Cycles through a list of words on a timer, the same way you'd write it
+ * with plain DOM APIs: a closure variable for the current index, and two
+ * chained `setTimeout`s that mutate the same node directly. Each swap plays
+ * the `.word-out` exit animation, then (once it finishes) swaps the text and
+ * forces the `.word-cycle` entrance animation to replay by removing the
+ * class, forcing a reflow, and re-adding it. The exit delay below must match
+ * the `word-out` animation duration in styles.css.
+ *
+ * Note: once mounted, the timer chain runs forever — there's no unmount
+ * hook to cancel it against.
+ * @extends {Component}
  */
 class WordCycle extends Component {
     /** Must match the `word-out` animation duration in styles.css. */
@@ -18,38 +17,41 @@ class WordCycle extends Component {
 
     static template = `<span class="word-cycle" data-ref="word"></span>`
 
-    /** @type {number | undefined} */
-    #timer
-
-    /** @type {number | undefined} */
-    #exitTimer
-
-    /** @type {HTMLElement | undefined} */
-    #word
-
-    /** @param {WordCycleProps} props */
-    constructor(props) {
-        super(props)
-        this.state = { index: 0 }
+    /**
+     * @param {Object} config
+     * @param {string[]} config.words - Words to cycle through, in order.
+     * @param {number} [config.interval] - Milliseconds between words. Defaults to 2000.
+     */
+    constructor({ words, interval = 2000 }) {
+        super()
+        this.words = words
+        this.interval = interval
     }
 
     /** @param {DocumentFragment} root */
     script(root) {
-        this.#word = $(root, '[data-ref="word"]')
-        this.#word.textContent = this.props.words[this.state.index]
-    }
+        const word = $(root, '[data-ref="word"]')
+        let index = 0
 
-    onMount() {
-        this.#timer = setInterval(() => {
-            this.#word?.classList.add('word-out')
-            this.#exitTimer = setTimeout(() => {
-                this.setState({ index: (this.state.index + 1) % this.props.words.length })
-            }, WordCycle.EXIT_MS)
-        }, this.props.interval ?? 2000)
-    }
+        const show = () => {
+            word.classList.remove('word-cycle', 'word-out')
+            void word.offsetWidth
+            word.textContent = this.words[index]
+            word.classList.add('word-cycle')
+        }
 
-    onDestroy() {
-        clearInterval(this.#timer)
-        clearTimeout(this.#exitTimer)
+        const cycle = () => {
+            setTimeout(() => {
+                word.classList.add('word-out')
+                setTimeout(() => {
+                    index = (index + 1) % this.words.length
+                    show()
+                    cycle()
+                }, WordCycle.EXIT_MS)
+            }, this.interval)
+        }
+
+        word.textContent = this.words[index]
+        cycle()
     }
 }
